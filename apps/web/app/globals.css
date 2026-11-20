@@ -1,0 +1,108 @@
+@import 'tailwindcss';
+
+/* Design tokens. Light is the default; dark follows the OS. */
+:root {
+  --bg: #f6f1e7;
+  --surface: #fffdf8;
+  --sunken: #ece5d6;
+  --ink: #17140f;
+  --muted: #6b6457;
+  --line: #17140f;
+  --soft-line: #ddd4c1;
+  --accent: #ff4d1c;
+  --accent-ink: #ffffff;
+  --good: #1f9d55;
+  --bad: #d92d20;
+  /* One colour per voting view. Defined once, reused on Live and Stats pages. */
+  --view-grid: #3b6ff5;
+  --view-swipe: #e8338f;
+  --view-this_or_that: #e59a00;
+  --view-yes_no: #14a06b;
+  --shadow: 4px 4px 0 0 var(--line);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14120e;
+    --surface: #1f1c16;
+    --sunken: #2a261d;
+    --ink: #f5efe2;
+    --muted: #a39a88;
+    --line: #f5efe2;
+    --soft-line: #3a3528;
+    --accent: #ff6a3d;
+    --accent-ink: #14120e;
+    --good: #3ecf80;
+    --bad: #ff6b5e;
+    --view-grid: #6f93ff;
+    --view-swipe: #ff5fae;
+    --view-this_or_that: #ffb938;
+    --view-yes_no: #39d49a;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-sunken: var(--sunken);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-soft: var(--soft-line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-good: var(--good);
+  --color-bad: var(--bad);
+  --radius-chunk: 1.25rem;
+  --shadow-chunk: var(--shadow);
+  --font-sans: ui-rounded, 'SF Pro Rounded', 'Segoe UI Variable Display', 'Segoe UI', system-ui, sans-serif;
+}
+
+html {
+  background: var(--bg);
+  color: var(--ink);
+}
+
+body {
+  min-height: 100dvh;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 0.5rem;
+}
+
+@keyframes pop-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes slide-in {
+  from { opacity: 0; transform: translateX(24px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes shimmer {
+  to { background-position: -200% 0; }
+}
+@keyframes check-pop {
+  0% { transform: scale(0.4); opacity: 0; }
+  70% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+.anim-pop { animation: pop-in 220ms ease-out both; }
+.anim-slide { animation: slide-in 200ms ease-out both; }
+.anim-check { animation: check-pop 180ms ease-out both; }
+.skeleton {
+  background: linear-gradient(90deg, var(--sunken) 30%, var(--soft-line) 50%, var(--sunken) 70%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-pop, .anim-slide, .anim-check, .skeleton { animation: none; }
+  * { transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
