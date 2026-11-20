@@ -15,13 +15,19 @@ Branch `t/T0` holds everything merged. `main` is untouched. Nothing is pushed.
 
 Run it: see README section 7 ("Quickest start"). No external accounts needed.
 
+## Verified in a real browser (21 Nov, DOM-driven, no screenshots)
+
+Consent, home with live module counts, and full 5-set sessions in **all four views** (swipe buttons, grid radios + Confirm, this-or-that knockout with 2/3/4 options, yes/no), seeded PNGs load at 1280x720, done page. Dev login through the form, creator publish (captions), results page, admin Stats and Live with correct per-view numbers, and no horizontal overflow at 360 px on all 11 pages. One bug found and fixed: Next ignored the root .env (dev-login form was missing); `next.config.ts` now loads it.
+
 ## NOT verified (do these first)
 
-1. **Nobody clicked through the UI in a browser.** The screenshot tool timed out twice. Pages return 200 and server-render correctly, and the API flow works over HTTP, but swipe drag, knockout, uploads from the browser, and mobile layout at 360 px are untested. Test cases E-01..E-36 are all still manual.
-2. **Real Flagsmith is untested.** Browser SDK path (`FlagsProvider`, `getExperimentFlag`, `trackEvent`) and `@flagsmith/nodejs` were written against the installed `.d.ts` but never ran against a server. `scripts/flagsmith-setup.sh` has 9 `# verify:` lines (CLI flags unconfirmed). Gates G1, G2, G3 are still open.
+1. **Pixel-level look.** Screenshots time out in this browser session, so nobody has looked at the design. Check visual polish, swipe drag by finger/mouse, and the image upload flow from the creator form (file picker + browser resize). The API side of uploads is tested by the seed run.
+2. **Real Flagsmith is untested.** Browser SDK path (`FlagsProvider`, `getExperimentFlag`, `trackEvent`) and `@flagsmith/nodejs` were written against the installed `.d.ts` but never ran against a server. `scripts/flagsmith-setup.sh` has 9 `# verify:` lines (CLI flags unconfirmed). Gates G1, G2, G3 are still open. In local mode the view comes from `?layout=`.
 3. **Google sign-in is untested** (no credentials). Dev login is what was exercised.
 4. **R2 uploads are untested.** Local-disk uploads only.
 5. Flagsmith dashboard link paths on the Stats page are guesses (`/features?search=`, `/experiments`, `/users`).
+
+Local DB note: `apps/api/.data/pglite` holds 68 seeded sets plus 5 test sessions from this verification. Delete `apps/api/.data` to reset (reseeding takes about 5 minutes because of the upload rate limit).
 
 ## Deviations from the docs (all intentional, all small)
 
