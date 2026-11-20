@@ -9,3 +9,4 @@ flagsmith/flagsmith.env
 *.log
 .DS_Store
 .vercel
+.data
