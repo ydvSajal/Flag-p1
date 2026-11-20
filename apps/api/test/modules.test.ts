@@ -1,6 +1,10 @@
+import { mkdtemp, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
 import { modulesResponseSchema } from '@picklab/shared';
 import { describe, expect, it } from 'vitest';
 import { setResults } from '../src/db/schema';
+import { cachedFlags, localFlagSource } from '../src/flags';
 import { as, makeApp, makeSet, makeUser } from './helpers';
 
 const OFF = { enabled: false };
@@ -99,6 +103,19 @@ describe('GET /api/modules', () => {
     expect(none).toEqual({ votingEnabled: true, modules: [] });
     const kept = (await t.req('GET', '/api/modules', as(cached))).parse(modulesResponseSchema);
     expect(kept.modules).toHaveLength(4);
+  });
+
+  it('local-flags.json: waves limit testers, creators always see the module', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'picklab-flags-'));
+    const file = path.join(dir, 'flags.json');
+    await writeFile(file, JSON.stringify({ module_captions: { enabled: true, waves: [2], value: { title: 'Caps' } } }));
+    const flags = cachedFlags(localFlagSource(file), () => new Date());
+    const w1 = await flags.forUser({ id: 'a', role: 'tester', wave: 1 });
+    const w2 = await flags.forUser({ id: 'b', role: 'tester', wave: 2 });
+    const cr = await flags.forUser({ id: 'c', role: 'creator', wave: 1 });
+    expect([w1.modules.captions.enabled, w2.modules.captions.enabled, cr.modules.captions.enabled]).toEqual([false, true, true]);
+    expect(w2.modules.captions.config.title).toBe('Caps');
+    expect([w1.votingEnabled, w1.modules.thumbnails.enabled]).toEqual([true, false]);
   });
 
   it('A-14b no user is 401', async () => {
