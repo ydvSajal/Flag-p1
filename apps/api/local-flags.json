@@ -1,0 +1,19 @@
+{
+  "voting_enabled": { "enabled": true },
+  "module_thumbnails": {
+    "enabled": true,
+    "value": { "title": "Thumbnails", "instructions": "Which thumbnail would you click?", "sets_per_session": 5 }
+  },
+  "module_captions": {
+    "enabled": true,
+    "value": { "title": "Captions", "instructions": "Which caption makes you want to read on?", "sets_per_session": 5 }
+  },
+  "module_reel_captions": {
+    "enabled": true,
+    "value": { "title": "Reel captions", "instructions": "Which caption would stop your scroll?", "sets_per_session": 5 }
+  },
+  "module_visuals": {
+    "enabled": true,
+    "value": { "title": "Visuals", "instructions": "Which visual looks best?", "sets_per_session": 5 }
+  }
+}

@@ -10,3 +10,4 @@ flagsmith/flagsmith.env
 .DS_Store
 .vercel
 .claude/
+.data
