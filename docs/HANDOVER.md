@@ -123,6 +123,7 @@ Gates G1-G6, UI design, seed content collection, creating the metric and the exp
 - Web data fetching: `lib/api.ts` only. No fetch calls in components.
 - Colours for the four views are defined once in `components/ui/badge` and reused on the Live and Stats pages.
 - Copy: short, friendly, honest. Never promise rewards.
+- Flagsmith wiring (D11): use the persisted guest id as the identity on every call; create each Flagsmith client once at module scope; give both SDKs a default flag handler (browser `grid`, API cached flags then none); call `trackEvent('session_completed')` only when the last set is saved, with the identity used for the exposure.
 
 ## 8. FRONTEND.md errata
 

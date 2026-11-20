@@ -6,7 +6,7 @@ A creator posts 2-4 options (thumbnails, captions) for an upcoming post. Anyone 
 
 Built for **Toggle Wars, Flagsmith Experimentation Hackathon, Track 01**.
 Build 26-27 Nov 2026 · real users 28 Nov · submit 29 Nov before 8 PM IST.
-Expected audience: 50-100 people. **The product and how Flagsmith drives it matter more than the numbers.**
+Expected audience: 50-100 people. **The product and how Flagsmith drives it matter more than the numbers**, but the experiment must be wired correctly and its result stated honestly (decisions D10-D12 in `docs/DUE-DILIGENCE.md`). Judged on Use of Flagsmith, Impact, Creativity and the demo video (about 25%).
 
 > Status: planning done, code starts 26 Nov (task T0). Everything below is the plan every dev builds against.
 
@@ -23,7 +23,7 @@ Expected audience: 50-100 people. **The product and how Flagsmith drives it matt
 | Product / demo | `docs/PRD.md`, `docs/SCOPE.md` sections 8-9 |
 
 **If docs disagree, higher wins:**
-`docs/DUE-DILIGENCE.md` decisions (D1-D9) > `docs/SCOPE.md` > `docs/PRD.md` / `docs/TRD.md` > `docs/FRONTEND.md`.
+`docs/DUE-DILIGENCE.md` decisions (D1-D12) > `docs/SCOPE.md` > `docs/PRD.md` / `docs/TRD.md` > `docs/FRONTEND.md`.
 
 **Ignore these, they are outdated:** `PickLab-Track1.md`, `DOCS.md` (upstream Flagsmith readme), `docs/archive/`.
 
@@ -179,7 +179,8 @@ Task list with time boxes and acceptance tests: `docs/HANDOVER.md` section 5.
 | 26 Nov | Monorepo, API, DB, guest id, modules from flags, sessions, `grid` + `swipe`, Live page | Guest finishes a session in `grid` or `swipe` per the flag and shows on Live (test X-01) |
 | 27 Nov | `this_or_that`, `yes_no`, creator post + results, Stats, waves, kill switch, deploy | Changing weights in Flagsmith changes what new visitors get; X-01..X-08 pass on Production. Record Stream B |
 | 28 Nov | Set final split, create metric, start experiment, share public link | Visitors on views, responses flowing |
-| 29 Nov | End experiment, roll out winner (or `grid`), record demo, submit | Video submitted |
+| 28 Nov evening | Record Streams A and C of the demo from live data (D12) | Video drafted |
+| 29 Nov | End experiment, roll out winner (or `grid`), re-shoot the last 20 s, submit early. Never record in the last hour | Video submitted |
 
 **Cut order if late (6 PM, 27 Nov, no discussion):** `yes_no`, reel captions + visuals, Stats bars (keep table), creator delete + account page.
 **Never cut:** `grid`, `swipe`, Live page, percentage rollout, waves, kill switch, experiment, winner rollout.
@@ -191,7 +192,10 @@ Task list with time boxes and acceptance tests: `docs/HANDOVER.md` section 5.
 - **A session belongs to one module.** Started from a module card. (D5)
 - **Live/Stats pages show the actual split only**, plus a link to the flag in Flagsmith. No Flagsmith admin key on the server. (D4)
 - Live status: `finished` = completed, `voting` = seen in last 2 min, `dropped` = not finished and unseen for 2 min. (D7)
-- If Flagsmith shows *Collecting data* instead of a verdict, that is fine. We show the experiment, exposures and our own Stats page.
+- **Experiment design is locked before data** (D10): metric `session_completed`, guardrail average time per vote (from our DB), target 50+ identities per arm. Say on camera if the interval still spans zero.
+- **Wiring rules** (D11): one stable guest id, `session_completed` tracked with that same id at completion, `voting_layout` multivariate from day one, client created once, default flag handlers on both SDKs, server key only in server env vars.
+- **Video is recorded by 28 Nov night** (D12).
+- If Flagsmith shows *Collecting data* instead of a verdict, we say so honestly and show the experiment, exposures and our own Stats page.
 
 ---
 

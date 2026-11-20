@@ -58,6 +58,9 @@ Severity: **H** = would break the demo or the experiment, **M** = wasted build t
 | D7 | Live status: `finished` = `completed_at` set. `voting` = not finished and seen in the last 2 min. `dropped` = not finished and not seen for 2 min | No |
 | D8 | R2 bucket is public-read behind one domain. Options are content meant for the public anyway. Uploads stay presigned | No |
 | D9 | Tests run on in-memory Postgres (pglite) with Flagsmith and auth injected as fakes through an app factory. Details in `TEST-CASES.md` | No |
+| D10 | **Experiment design is fixed before any data is collected** (source: WeMakeDevs "How to Win Toggle Wars", read 21 Nov). Primary metric `session_completed` (Occurrence, higher is better) is locked now and never changed. One **guardrail** that we do not expect to move: average time per vote per view, from our own database (already on the Stats page, no new code, Flagsmith takes one primary metric). **Traffic target: at least 50 identities per arm, 130+ recruited for two arms.** No stopping on the first favourable reading. Flagsmith's result is a Bayesian credible interval, not a pass/fail: if it spans zero we say so on camera | No |
+| D11 | **Wiring rules** (same source, plus "What a Feature Flag Actually Does"). (a) One stable id: the guest id is the Flagsmith identity, is persisted, and is never regenerated per request. (b) `session_completed` is tracked with the same identity as the exposure, at the moment the last set is saved, never on page load. (c) `voting_layout` is multivariate from the first day, never converted from boolean. (d) Exposures must appear on both arms, roughly per the weights. (e) The Flagsmith client is created once and reused, never per request. (f) Both SDKs get a default flag handler: browser falls back to `grid`; API falls back to cached flags, then no modules and `voting_enabled` on. (g) Server key only in server env vars, never `NEXT_PUBLIC_`, never in the repo | No |
+| D12 | **Demo video is recorded by the night of 28 Nov, not on 29 Nov** (video is about 25% of the score and "cannot be recorded in the last hour"). Stream B is recorded 27 Nov evening (D1). Streams A and C are recorded 28 Nov evening from live data. 29 Nov is for the winner rollout, re-shooting the last 20 seconds, and submitting. The video shows the problem, the working build and the Flagsmith side, and states plainly what the data could and could not say | No |
 
 ## 4. Feasibility of the 2-day build
 
@@ -73,7 +76,9 @@ Scope is 14 routes, 4 voting views, 1 API with 16 endpoints, 7 tables. With one 
 | Risk | Likelihood | Impact | Owner action |
 | --- | --- | --- | --- |
 | Self-hosted experimentation fails on test day | Medium | High | G2 dry run; Cloud account created and tested as plan B |
-| Fewer than 100 visitors, no Flagsmith result | High | Medium | D2; Stats page tells the story either way |
+| Fewer than 100 visitors, no Flagsmith result | High | Medium | D2, D10; Stats page tells the story either way; interval stated honestly on camera |
+| Wiring error silently invalidates the experiment (unstable id, no conversions, one-sided exposures) | Medium | High | D11; tests F-13..F-15 and S-04, X-09 before 28 Nov |
+| Video recorded too late | Medium | High | D12 |
 | Flagsmith or Neon cold start during the test | Medium | Medium | G6; cached flags and safe defaults in the app |
 | Guest identity changes mid-test (cookie cleared) | Low | Low | Accepted, stated in the demo |
 | Agents diverge from the contract | Medium | Medium | File ownership and stop-and-ask rules in `HANDOVER.md` |

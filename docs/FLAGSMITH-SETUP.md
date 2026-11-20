@@ -126,10 +126,12 @@ Wave release: module flags default **off** in Production. Add segment overrides:
 
 Experiment `voting_layout_v1`
 - Hypothesis: "The swipe layout raises the share of testers who finish a 5-set session from the grid baseline within 24 h."
-- Rollout 100%, split evenly across the four views (control gets the remainder). Weights cannot be changed while it runs, only the rollout %, so finish playing with percentages first.
-- Numbers are not the goal (see `SCOPE.md` section 5): the sample-size table below explains why Flagsmith will likely show *Collecting data*, not a reason to cut views.
-- Primary metric: `session_completed`, **Occurrence**, higher is better.
-- Votes per tester and time per vote come from our own `votes` table, not from Flagsmith.
+- Rollout 100%, two arms per decision D2 in `DUE-DILIGENCE.md`: `grid` vs `swipe` 50/50, `this_or_that` and `yes_no` at 0% (control gets the remainder). The four-arm plan is superseded. Weights cannot be changed while it runs, only the rollout %, so finish playing with percentages first.
+- The sample-size table below still applies: two arms need 50 identities each to leave *Collecting data*. Target 130+ recruited (D10). If the interval still spans zero, say so on camera.
+- Primary metric: `session_completed`, **Occurrence**, higher is better. Locked before any data is collected (D10).
+- Guardrail (not expected to move): average time per vote per view, from our own database. Flagsmith takes one primary metric.
+- Votes per tester and time per vote come from our own `responses` and `set_results` tables, not from Flagsmith.
+- `voting_layout` is created multivariate from the start, never converted from boolean (D11c).
 - Create the experiment only after every layout in it works (flag locks; variations cannot be added later).
 - Decision rule: use Flagsmith's own thresholds. Ship `swipe` above **95%** chance to beat control; keep `grid` below 5%; otherwise keep `grid` and report inconclusive with the credible interval.
 
@@ -160,4 +162,5 @@ With 50-100 visitors over 4 views, expect *Collecting data* in Flagsmith; the pe
 
 No exposures: variation without `key`; flag requested before `identify`; page closed before `flushEvents`; SDK still pointing at Cloud events URL.
 No conversions: event name differs by case/spelling; different identity id than the exposure; conversion happened before the first exposure.
+Exposures on one arm only: the flag is read in one place and rendered from another; read it once in `apps/web/lib/session.ts` and render that value. Flat conversions with rising exposures: `trackEvent` not firing, or called with a different identity than the exposure (call it when the last set is saved, never on page load). Reassigned visitors: identity regenerated per request instead of the persisted guest id. No fallback when Flagsmith is down: add the default flag handler on both SDKs (D11f).
 Nothing in results: no warehouse connected on that environment; identity outside rollout; timestamps outside window; batch over 2 MiB; enable SDK debug logging.

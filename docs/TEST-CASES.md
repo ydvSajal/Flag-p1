@@ -10,8 +10,8 @@ Spec under test: `PRD.md` v2, `TRD.md` v2. Task mapping: `HANDOVER.md` section 5
 | API | A | vitest against `createApp(deps)` with pglite, fake flags, fake auth, fake storage, fake clock | `pnpm test`, no infrastructure | 59 |
 | Scripts | S | Run the script, check the database | Local stack | 4 |
 | Web | E | Manual checklist, phone width and desktop | Local stack | 36 |
-| Flagsmith | F | Manual, in the Flagsmith dashboard with the app open | Local, then Production | 12 |
-| Acceptance | X | Manual end to end; X-02..X-08 equal SCOPE section 8 | Production | 9 |
+| Flagsmith | F | Manual, in the Flagsmith dashboard with the app open | Local, then Production | 15 |
+| Acceptance | X | Manual end to end; X-02..X-08 equal SCOPE section 8 | Production | 11 |
 
 No browser automation framework: 36 manual checks cost about 40 minutes per pass, and a framework costs more than that to set up in a two-day build.
 
@@ -204,6 +204,9 @@ Rule: a test asserts behaviour through HTTP and, where the case says so, one dat
 | F-10 | B | Add an unknown variation key | App renders `grid` |
 | F-11 | C | Create metric `session_completed` (Occurrence), start experiment, 120 simulated visitors | Exposures per variation in Flagsmith; conversions counted; a result or *Collecting data* per the 50-identity rule |
 | F-12 | C | End the experiment, set the winner to 100% | Every new session gets the winner; flag is unlocked |
+| F-13 | C | Same visitor, cookies kept: reloads, closes and reopens the tab, and starts 3 sessions | Same Flagsmith identity every time (one row in Identities); same variation unless weights changed (D11a) |
+| F-14 | C | Experiment running, 40 simulated visitors | Exposures on both arms, roughly per the 50/50 weights; none on `this_or_that` or `yes_no` (D11d) |
+| F-15 | C | Same 40 visitors, 30% drop off | Conversions rise with completed sessions; `session_completed` identity equals the exposure identity; each completed session counts once (D11b) |
 
 Also check once (failure list in `FLAGSMITH-SETUP.md` section 6): stop Flagsmith entirely, and the app still loads with cached flags, or with `grid` and no modules on a first visit.
 
@@ -219,7 +222,9 @@ Also check once (failure list in `FLAGSMITH-SETUP.md` section 6): stop Flagsmith
 | X-06 | All four views record responses; a creator sees per-option results | SCOPE 8.5 |
 | X-07 | Experiment ran, exposures visible, winner (or `grid`) at 100% | SCOPE 8.6 |
 | X-08 | No secrets: `git grep` for key patterns is clean; `.env*` ignored; Flagsmith default secrets changed; Flagsmith sign-up closed | SCOPE 8.7 |
-| X-09 | Database visitors per view are within 5% of Flagsmith exposures per variation | PRD |
+| X-09 | Database visitors per view are within 5% of Flagsmith exposures per variation; F-13..F-15 pass on Production before the experiment starts | PRD, D11 |
+| X-10 | Experiment design written down before it starts: metric `session_completed`, guardrail average time per vote, traffic target 50+ per arm | D10 |
+| X-11 | Demo video drafted by the night of 28 Nov; nothing recorded in the last hour before submit | D12 |
 
 ## 8. Performance and safety spot checks (once, before 28 Nov)
 

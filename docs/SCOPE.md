@@ -57,9 +57,14 @@ Demo story: "I open Flagsmith, change swipe from 10% to 50%, and new visitors st
 
 ## 4. Out of scope
 
-Payments, marketplace, AI suggestions, bot/fraud detection, native app, notifications, i18n, ClickHouse/Kafka, Flagsmith Cloud (plan B only), chasing statistical significance.
+Payments, marketplace, AI suggestions, bot/fraud detection, native app, notifications, i18n, ClickHouse/Kafka, Flagsmith Cloud (plan B only), our own significance maths (we read Flagsmith's result and state it honestly; see section 5).
 
-## 5. About the numbers (kept honest, not the focus)
+## 5. About the numbers (kept honest)
+
+Judging (WeMakeDevs, "How to Win Toggle Wars"): Use of Flagsmith, Impact, Creativity, and the demo video (about 25%). Test for Flagsmith use: delete Flagsmith and the product must not behave the same. A result is the credible interval on the difference clearing zero; if it spans zero we do not have enough traffic and we say so. Decisions D10-D12 in `DUE-DILIGENCE.md` fix the metric, guardrail, traffic target, wiring rules and video timing.
+
+- Primary metric `session_completed`, locked now. Guardrail: average time per vote per view, from our database.
+- Traffic target: 50+ identities per arm in the experiment (two arms), 130+ recruited.
 
 - Flagsmith shows an experiment result only after **50 identities per view**. With 50-100 visitors over 4 views it will most likely show *Collecting data*. That is fine: the demo shows the experiment set up, exposures arriving, and our own Stats page per view.
 - If you want a real Flagsmith verdict anyway: on the last day, run the experiment with only `grid` vs the best-looking view. Optional.
@@ -78,7 +83,8 @@ Prep (now to 25 Nov): Flagsmith running locally and on Railway with a dry-run ex
 | 26 Nov | Monorepo, API, DB, guest id, modules from flags, sessions + responses, `grid` + `swipe`, Live page | A guest finishes a session in grid or swipe depending on the flag, and appears on the Live page |
 | 27 Nov | `this_or_that` + `yes_no`, creator post + results, Stats page, waves + kill switch, seed data, deploy, QA all 4 views, create metric + start experiment in the evening | Changing weights in Flagsmith changes what new visitors get; all 4 views record responses |
 | 28 Nov | People use it; open waves; play live with percentages early, then lock the split for the experiment | Visitors on all views, responses flowing |
-| 29 Nov | End experiment, roll winner (or grid) to 100%, record demo, submit | Video submitted |
+| 28 Nov (evening) | Record Streams A and C of the demo from live data (D12) | Video drafted |
+| 29 Nov | End experiment, roll winner (or grid) to 100%, re-shoot the last 20 s, submit well before 8 PM IST. Video is never recorded in the last hour | Video submitted |
 
 Cut order if late: `yes_no` view, reel captions/visuals, Stats page charts (keep the table), creator delete. Never cut: grid + swipe, Live page, percentage rollout, waves, kill switch, experiment, winner rollout.
 
@@ -91,7 +97,8 @@ Cut order if late: `yes_no` view, reel captions/visuals, Stats page charts (keep
 5. All four views record comparable responses; creators see per-option results.
 6. The experiment ran, exposures are visible in Flagsmith, the winner (or grid) is served at 100% at the end.
 7. No secrets in the repo; Flagsmith default secrets changed.
-8. Demo video of 3 min or less: problem, product, Stream A, Stream B, Stream C, what we learned.
+8. Demo video of 3 min or less: problem, product, Stream A, Stream B, Stream C, what we learned. Recorded by 28 Nov night (D12).
+9. Wiring checks pass before the experiment starts: stable identity, exposures on both arms, `session_completed` counted (F-13..F-15, X-09).
 
 ## 9. Demo video outline (about 3 min)
 
@@ -99,8 +106,8 @@ Cut order if late: `yes_no` view, reel captions/visuals, Stats page charts (keep
 2. Product (30 s): visitor opens the link, votes in a view; creator sees results.
 3. Stream B (45 s): Flagsmith, change view split 10% -> 50% swipe, Live page shows new visitors on swipe; identity override forces this-or-that for the presenter.
 4. Stream A (30 s): open captions for wave 2, it appears; kill switch.
-5. Stream C (45 s): experiment, exposures, Stats page completion per view, end experiment, roll winner to 100%.
-6. Learnings (15 s): what the data could and could not say.
+5. Stream C (45 s): experiment, exposures, Stats page completion per view, the credible interval (say plainly if it still spans zero), end experiment, roll winner to 100%.
+6. Learnings (15 s): what the data could and could not say. Show where Flagsmith removes behaviour if deleted (Flagsmith use).
 
 ## 10. Open items
 
