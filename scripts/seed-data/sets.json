@@ -1,0 +1,332 @@
+[
+  { "module": "thumbnails", "title": "I tried posting daily for 30 days", "options": [
+    { "image": { "headline": "30 DAYS. 30 POSTS.", "bg": "#ff3b30", "fg": "#ffffff", "style": "bold" } },
+    { "image": { "headline": "What daily posting did to me", "bg": "#f5f1e8", "fg": "#1c1c1c", "style": "minimal" } }
+  ] },
+  { "module": "thumbnails", "title": "Why my first 100 subscribers took a year", "options": [
+    { "image": { "headline": "100 SUBS. ONE YEAR.", "bg": "#1d3557", "fg": "#f1faee", "style": "bold" } },
+    { "image": { "headline": "The slow start nobody shows", "bg": "#457b9d", "fg": "#ffffff", "style": "split" } },
+    { "image": { "headline": "Year one, honestly", "bg": "#f1faee", "fg": "#1d3557", "style": "minimal" } }
+  ] },
+  { "module": "thumbnails", "title": "Budget mic under 50 dollars vs 300", "options": [
+    { "image": { "headline": "$40 vs $300 MIC", "bg": "#ffd60a", "fg": "#000000", "style": "bold" } },
+    { "image": { "headline": "Can you hear the difference?", "bg": "#000000", "fg": "#ffd60a", "style": "split" } },
+    { "image": { "headline": "Cheap audio test", "bg": "#2b2d42", "fg": "#edf2f4", "style": "face" } },
+    { "image": { "headline": "Sound check", "bg": "#edf2f4", "fg": "#2b2d42", "style": "minimal" } }
+  ] },
+  { "module": "thumbnails", "title": "Editing a 10-minute video in 45 minutes", "options": [
+    { "image": { "headline": "45 MIN EDIT", "bg": "#06d6a0", "fg": "#073b4c", "style": "bold" } },
+    { "image": { "headline": "Timer on. Cut.", "bg": "#073b4c", "fg": "#06d6a0", "style": "minimal" } }
+  ] },
+  { "module": "thumbnails", "title": "Free tools that replaced my paid stack", "options": [
+    { "image": { "headline": "FREE TOOLS ONLY", "bg": "#8338ec", "fg": "#ffffff", "style": "bold" } },
+    { "image": { "headline": "I cancelled three subscriptions", "bg": "#ff006e", "fg": "#ffffff", "style": "split" } },
+    { "image": { "headline": "Zero dollars a month", "bg": "#fb5607", "fg": "#ffffff", "style": "face" } }
+  ] },
+  { "module": "thumbnails", "title": "What I actually earn from 10k followers", "options": [
+    { "image": { "headline": "10K FOLLOWERS = ?", "bg": "#264653", "fg": "#e9c46a", "style": "bold" } },
+    { "image": { "headline": "The real monthly number", "bg": "#e9c46a", "fg": "#264653", "style": "minimal" } },
+    { "image": { "headline": "Income breakdown", "bg": "#2a9d8f", "fg": "#ffffff", "style": "split" } },
+    { "image": { "headline": "Not what you think", "bg": "#f4a261", "fg": "#264653", "style": "face" } }
+  ] },
+  { "module": "thumbnails", "title": "Batch filming: one day, two weeks of content", "options": [
+    { "image": { "headline": "ONE DAY. TWO WEEKS.", "bg": "#ef476f", "fg": "#ffffff", "style": "bold" } },
+    { "image": { "headline": "Batching, step by step", "bg": "#fff3f6", "fg": "#ef476f", "style": "minimal" } }
+  ] },
+  { "module": "thumbnails", "title": "Why I stopped chasing trends", "options": [
+    { "image": { "headline": "STOP CHASING TRENDS", "bg": "#111111", "fg": "#f72585", "style": "bold" } },
+    { "image": { "headline": "The trend trap", "bg": "#4cc9f0", "fg": "#111111", "style": "split" } },
+    { "image": { "headline": "My niche, my rules", "bg": "#7209b7", "fg": "#ffffff", "style": "face" } }
+  ] },
+  { "module": "thumbnails", "title": "Lighting a room for under 30 dollars", "options": [
+    { "image": { "headline": "UNDER $30 LIGHTING", "bg": "#fca311", "fg": "#14213d", "style": "bold" } },
+    { "image": { "headline": "Glow on a budget", "bg": "#14213d", "fg": "#fca311", "style": "minimal" } },
+    { "image": { "headline": "Before and after", "bg": "#e5e5e5", "fg": "#14213d", "style": "split" } },
+    { "image": { "headline": "Warm light, cheap", "bg": "#ffb703", "fg": "#023047", "style": "face" } }
+  ] },
+  { "module": "thumbnails", "title": "Pitching brands without an agent", "options": [
+    { "image": { "headline": "NO AGENT. NO PROBLEM.", "bg": "#0077b6", "fg": "#ffffff", "style": "bold" } },
+    { "image": { "headline": "My pitch email, line by line", "bg": "#caf0f8", "fg": "#03045e", "style": "minimal" } }
+  ] },
+  { "module": "thumbnails", "title": "The newsletter that grew my channel", "options": [
+    { "image": { "headline": "EMAIL GREW MY VIDEOS", "bg": "#3a0ca3", "fg": "#ffffff", "style": "bold" } },
+    { "image": { "headline": "One newsletter, 40% more views", "bg": "#4361ee", "fg": "#ffffff", "style": "split" } },
+    { "image": { "headline": "Subscribers who click", "bg": "#f72585", "fg": "#ffffff", "style": "face" } }
+  ] },
+  { "module": "thumbnails", "title": "Rewriting my worst-performing video", "options": [
+    { "image": { "headline": "MY WORST VIDEO, FIXED", "bg": "#d62828", "fg": "#ffffff", "style": "bold" } },
+    { "image": { "headline": "Second take", "bg": "#fcbf49", "fg": "#003049", "style": "minimal" } }
+  ] },
+  { "module": "thumbnails", "title": "Five hooks that held viewers past 3 seconds", "options": [
+    { "image": { "headline": "5 HOOKS THAT WORK", "bg": "#582f0e", "fg": "#fefae0", "style": "bold" } },
+    { "image": { "headline": "Keep them past 3 seconds", "bg": "#fefae0", "fg": "#582f0e", "style": "minimal" } },
+    { "image": { "headline": "Hook tested, hook ranked", "bg": "#bc6c25", "fg": "#fefae0", "style": "split" } },
+    { "image": { "headline": "The first 3 seconds", "bg": "#283618", "fg": "#dda15e", "style": "face" } }
+  ] },
+  { "module": "thumbnails", "title": "Quitting my day job: the honest numbers", "options": [
+    { "image": { "headline": "THE HONEST NUMBERS", "bg": "#2d6a4f", "fg": "#ffffff", "style": "bold" } },
+    { "image": { "headline": "Savings vs. fear", "bg": "#b7e4c7", "fg": "#1b4332", "style": "split" } },
+    { "image": { "headline": "Month one, unfiltered", "bg": "#1b4332", "fg": "#b7e4c7", "style": "face" } }
+  ] },
+  { "module": "thumbnails", "title": "Setting up a home studio in a closet", "options": [
+    { "image": { "headline": "CLOSET STUDIO", "bg": "#495057", "fg": "#f8f9fa", "style": "bold" } },
+    { "image": { "headline": "Four square metres, full setup", "bg": "#f8f9fa", "fg": "#495057", "style": "minimal" } }
+  ] },
+  { "module": "thumbnails", "title": "Live streaming on a laptop, no capture card", "options": [
+    { "image": { "headline": "NO CAPTURE CARD", "bg": "#22223b", "fg": "#c9ada7", "style": "bold" } },
+    { "image": { "headline": "Live from a laptop", "bg": "#4a4e69", "fg": "#f2e9e4", "style": "split" } },
+    { "image": { "headline": "Stream setup on a shoestring", "bg": "#9a8c98", "fg": "#22223b", "style": "minimal" } }
+  ] },
+  { "module": "thumbnails", "title": "Planning 12 weeks of content in one sitting", "options": [
+    { "image": { "headline": "12 WEEKS. ONE SITTING.", "bg": "#e76f51", "fg": "#ffffff", "style": "bold" } },
+    { "image": { "headline": "My content calendar, open", "bg": "#264653", "fg": "#f4a261", "style": "split" } },
+    { "image": { "headline": "A planning session, sped up", "bg": "#f4f1de", "fg": "#3d405b", "style": "minimal" } },
+    { "image": { "headline": "Plan once, post for a quarter", "bg": "#81b29a", "fg": "#f4f1de", "style": "face" } }
+  ] },
+  { "module": "thumbnails", "title": "The thumbnail test that tripled clicks", "options": [
+    { "image": { "headline": "3X CLICKS. SAME VIDEO.", "bg": "#ff9f1c", "fg": "#011627", "style": "bold" } },
+    { "image": { "headline": "Only the thumbnail changed", "bg": "#011627", "fg": "#ff9f1c", "style": "minimal" } }
+  ] },
+  { "module": "thumbnails", "title": "Comments I ignore, and why", "options": [
+    { "image": { "headline": "COMMENTS I IGNORE", "bg": "#390099", "fg": "#ffffff", "style": "bold" } },
+    { "image": { "headline": "Read less, make more", "bg": "#9e0059", "fg": "#ffffff", "style": "split" } },
+    { "image": { "headline": "Noise vs. signal", "bg": "#ff0054", "fg": "#ffffff", "style": "face" } }
+  ] },
+  { "module": "thumbnails", "title": "Choosing a niche when you have three hobbies", "options": [
+    { "image": { "headline": "3 HOBBIES. 1 CHANNEL.", "bg": "#00b4d8", "fg": "#03045e", "style": "bold" } },
+    { "image": { "headline": "Pick the one you can talk about", "bg": "#03045e", "fg": "#90e0ef", "style": "minimal" } }
+  ] },
+  { "module": "thumbnails", "title": "Sponsorship emails that got replies", "options": [
+    { "image": { "headline": "EMAILS THAT GOT REPLIES", "bg": "#fdf0d5", "fg": "#780000", "style": "bold" } },
+    { "image": { "headline": "Three lines, one reply", "bg": "#780000", "fg": "#fdf0d5", "style": "split" } },
+    { "image": { "headline": "What brands actually read", "bg": "#c1121f", "fg": "#fdf0d5", "style": "face" } },
+    { "image": { "headline": "Cold email, warm result", "bg": "#669bbc", "fg": "#003049", "style": "minimal" } }
+  ] },
+  { "module": "thumbnails", "title": "A creator's guide to saying no", "options": [
+    { "image": { "headline": "THE POWER OF NO", "bg": "#2b2118", "fg": "#f2cc8f", "style": "bold" } },
+    { "image": { "headline": "Declining a deal politely", "bg": "#f2cc8f", "fg": "#2b2118", "style": "minimal" } },
+    { "image": { "headline": "When the answer is no", "bg": "#3d405b", "fg": "#f4f1de", "style": "face" } }
+  ] },
+  { "module": "thumbnails", "title": "Why my shorts flopped, and what I changed", "options": [
+    { "image": { "headline": "MY SHORTS FLOPPED", "bg": "#ffffff", "fg": "#ff0000", "style": "bold" } },
+    { "image": { "headline": "Three changes, one reshoot", "bg": "#ff0000", "fg": "#ffffff", "style": "split" } }
+  ] },
+  { "module": "thumbnails", "title": "Sound design on a budget", "options": [
+    { "image": { "headline": "SOUND ON A BUDGET", "bg": "#1a1a2e", "fg": "#e94560", "style": "bold" } },
+    { "image": { "headline": "Free sounds that work", "bg": "#16213e", "fg": "#0f3460", "style": "split" } },
+    { "image": { "headline": "Make it sound expensive", "bg": "#e94560", "fg": "#1a1a2e", "style": "face" } }
+  ] },
+
+  { "module": "captions", "title": "First sponsorship offer for a desk lamp", "options": [
+    { "text": "Got my first sponsorship offer today. I said yes only because I already use this lamp every night. Here is the honest version of the deal." },
+    { "text": "Brand deal alert. Disclosure first: this is paid. The lamp is the one on my desk, and I would not put it on screen otherwise." }
+  ] },
+  { "module": "captions", "title": "Filmed my first vlog on a phone", "options": [
+    { "text": "Shot my first vlog on a phone and cut it on a tablet. Rough, shaky, and I still learned more than in six months of planning." },
+    { "text": "Step one of becoming a filmmaker: point a phone at your life and press record. Here is what I got wrong." },
+    { "text": "Do you need a camera to start? I used a phone, a window, and a lot of nerve. The vlog is up." }
+  ] },
+  { "module": "captions", "title": "Quitting the day job next month", "options": [
+    { "text": "Two weeks until my last day at the job. Scared, excited, and doing spreadsheets at midnight." },
+    { "text": "I leave my day job on the 30th. Here is the plan, the savings, and the part that still scares me." },
+    { "text": "Quitting is not the brave part. Saving six months of rent first is." },
+    { "text": "Day job ends Friday. The channel has to pay the bills by spring, so I am posting more, not less. Wish me luck." }
+  ] },
+  { "module": "captions", "title": "Thirty days of posting every day", "options": [
+    { "text": "Day 30 of posting daily. Some posts flopped, two went further than anything I have made. Consistency is boring and it works." },
+    { "text": "Thirty posts in thirty days. Numbers, lessons and one embarrassing outtake, all in the carousel." },
+    { "text": "I did not expect daily posting to make me a better editor. Turns out you get fast when you have no time to overthink." }
+  ] },
+  { "module": "captions", "title": "Budget mic test", "options": [
+    { "text": "Forty dollars versus three hundred. Same room, same script. Can you tell which is which? Comment your guess." },
+    { "text": "I bought the cheap mic so you do not have to. Verdict: fine for talking, worse for music. Full breakdown in the video." }
+  ] },
+  { "module": "captions", "title": "Editing faster with fewer tools", "options": [
+    { "text": "Cutting a ten-minute video in under an hour now. Fewer apps, one shortcut sheet, and zero perfectionism on the first pass." },
+    { "text": "My editing workflow is boring on purpose: rough cut, pacing pass, captions, export. Repeat until done." },
+    { "text": "The fastest edit is the one you do not redo. Here is the checklist I run before I hit export." },
+    { "text": "If your edit takes all weekend, the problem is not the software. It is the second pass you did not need." }
+  ] },
+  { "module": "captions", "title": "Free tools that replaced my subscriptions", "options": [
+    { "text": "Cancelled three subscriptions this month. Everything I use now is free, and nothing I make looks worse for it." },
+    { "text": "Zero dollars a month on tools. Here is the list, and which one I miss most." }
+  ] },
+  { "module": "captions", "title": "What 10k followers earns", "options": [
+    { "text": "10k followers, and the honest monthly number is smaller than you think. Brand deals are lumpy. Here is the breakdown." },
+    { "text": "People ask what 10k followers is worth. The answer depends on the niche, and I have the receipts for mine." },
+    { "text": "Ten thousand followers, one sponsorship a month, and a lot of unpaid work. Full income report is up." }
+  ] },
+  { "module": "captions", "title": "Batch filming for two weeks of content", "options": [
+    { "text": "One long filming day, two weeks of posts. Same outfit, same set, different hooks. Batching saved my sanity." },
+    { "text": "I filmed fourteen videos in a single afternoon. The trick is planning the shot list before you touch the camera." }
+  ] },
+  { "module": "captions", "title": "Stopped chasing trends", "options": [
+    { "text": "I stopped copying every trend this year. Views dipped for a month, then my audience started replying with real questions." },
+    { "text": "Trends are rented attention. My niche is slower, but the people who stay actually buy what I recommend." },
+    { "text": "Hot take: following every trend made my channel feel like nobody's. This is what I do instead." }
+  ] },
+  { "module": "captions", "title": "Lighting a room for under 30 dollars", "options": [
+    { "text": "Thirty dollars of lighting, one bulb, one diffuser, and a bedsheet. The before and after shocked me." },
+    { "text": "Good light is cheaper than a new camera. Here is my full setup for under thirty dollars, with links in the description." },
+    { "text": "Stop blaming your camera. Move the window, turn off the ceiling light, and add one warm lamp. Try it tonight." },
+    { "text": "Cheap lighting tip: bounce it off a white wall. Free, soft, and it hides every bit of clutter behind you." }
+  ] },
+  { "module": "captions", "title": "Pitching brands without an agent", "options": [
+    { "text": "No agent, no manager, just a template and a stubborn streak. Three of my five pitches got replies this month." },
+    { "text": "I sent five brand pitches this week. Here is exactly what I wrote, line by line, and why it worked." }
+  ] },
+  { "module": "captions", "title": "The newsletter that grew my videos", "options": [
+    { "text": "My newsletter has 2,000 people and they watch every video the day it drops. Email is the most underrated channel I have." },
+    { "text": "Forty percent more views since I started a weekly email. Here is the simple format I use every Sunday." },
+    { "text": "Subscribers who read the newsletter click the videos. Subscribers who only follow scroll past. Which one are you?" }
+  ] },
+  { "module": "captions", "title": "Rewriting my worst-performing video", "options": [
+    { "text": "My worst video got 212 views. I re-cut it, new title, new opening. Let us see if the second take works." },
+    { "text": "Revisiting the flop. Same footage, a clearer promise in the first five seconds. Results in a week." }
+  ] },
+  { "module": "captions", "title": "Five hooks that keep viewers past 3 seconds", "options": [
+    { "text": "Five hooks I tested on the same video. Only one kept people past three seconds. Guess which one before you scroll." },
+    { "text": "Your first three seconds decide everything. These are the hooks that held attention, ranked from weakest to strongest." },
+    { "text": "I changed nothing but the opening line. Retention went up by a third. The hook breakdown is in the video." },
+    { "text": "Stop starting with your name. Start with the result. Here are five openings I tested, and the numbers." }
+  ] },
+  { "module": "captions", "title": "Quitting the day job: the honest numbers", "options": [
+    { "text": "Month one without a salary. Savings down, stress up, and a surprising amount of pride. Real numbers below." },
+    { "text": "Everyone talks about quitting. Few talk about the spreadsheet. Here is mine, including the month I almost went back." },
+    { "text": "Quitting felt brave for a day. Then the invoice arrived. Here is what month one actually looked like." }
+  ] },
+  { "module": "captions", "title": "Home studio in a closet", "options": [
+    { "text": "Four square metres, a curtain, and foam panels. My closet studio sounds better than the room I used to record in." },
+    { "text": "You do not need a spare room. I built a full recording setup in a closet, and here is the layout." }
+  ] },
+  { "module": "captions", "title": "Live streaming without a capture card", "options": [
+    { "text": "Went live from a laptop with no capture card and the stream held up for two hours. Here is my exact setup." },
+    { "text": "A capture card is not the bottleneck. Upload speed and a decent webcam were. My low-budget live setup is up." },
+    { "text": "Streaming on a budget means choosing your limits. Lower the resolution, keep the chat close, and never stop talking." }
+  ] },
+  { "module": "captions", "title": "Planning twelve weeks of content", "options": [
+    { "text": "Twelve weeks of content planned in one sitting. Four pillars, one shot list, and a calendar I will actually follow." },
+    { "text": "Here is my content calendar for the quarter. Nothing fancy, just a spreadsheet and a timer for each block." },
+    { "text": "I used to plan week by week and burn out by week three. Planning a whole quarter at once changed that." },
+    { "text": "Plan once, post for three months. The one habit that stopped my panic-posting." }
+  ] },
+  { "module": "captions", "title": "A thumbnail test that tripled clicks", "options": [
+    { "text": "Same video, new thumbnail. Click rate went from 3 percent to nearly 9. The change was smaller than you would guess." },
+    { "text": "I ran two thumbnails against each other for a week. The winner was the one with less text and one clear face." }
+  ] },
+  { "module": "captions", "title": "Comments I ignore on purpose", "options": [
+    { "text": "I ignore most comments now. Not all of them. These are the three kinds I always answer, and the ones I skip." },
+    { "text": "Not every comment deserves a reply. Here is my rule for the ones that do, and why it made my videos better." },
+    { "text": "Reading every comment made me a worse creator. Sorting for signal changed how I plan what to post next." }
+  ] },
+  { "module": "captions", "title": "Picking a niche from three hobbies", "options": [
+    { "text": "Three hobbies, one channel. I picked the one I could talk about for a year without running out of things to say." },
+    { "text": "You do not need to choose forever. Pick one niche for three months, then see which topic keeps you curious." }
+  ] },
+  { "module": "captions", "title": "Sponsorship emails that got replies", "options": [
+    { "text": "Three lines and a clear offer. That was the cold email that got a reply from a brand I had never spoken to." },
+    { "text": "Most brand emails are too long. Mine has four sentences, one link, and a specific idea for their product." },
+    { "text": "What brands actually read in a pitch: your audience, your past results, and one concrete idea. Nothing else." },
+    { "text": "I rewrote my pitch template after forty rejections. The new version got replies in two days. Here it is." }
+  ] },
+  { "module": "captions", "title": "Sound design without a studio budget", "options": [
+    { "text": "Better sound beats better video. These free sound effects and a simple ducking trick made my edits feel expensive." },
+    { "text": "Your viewers forgive grainy footage, but not bad audio. Here is the cheapest way to clean up your voice." },
+    { "text": "Add three layers: room tone, a light music bed, and one sound effect per cut. That is the whole secret." },
+    { "text": "I spent nothing on sound this month and it still sounds better. Here is the free library I use every week." }
+  ] },
+
+  { "module": "reel_captions", "title": "Morning routine reel", "options": [
+    { "text": "My 6 a.m. routine is not glamorous. Coffee, one page of notes, and a filming session before the inbox opens." },
+    { "text": "Filming before breakfast, every day. Nobody sees the twelve takes, only the one that worked." },
+    { "text": "Save this if you want a creator routine that does not involve a ring light at sunrise." }
+  ] },
+  { "module": "reel_captions", "title": "Desk setup tour", "options": [
+    { "text": "Desk tour, total cost under two hundred dollars. The lamp is the best purchase I made this year." },
+    { "text": "Everything on this desk does a job. Nothing is here just to look good on camera." }
+  ] },
+  { "module": "reel_captions", "title": "Hook test on a cooking clip", "options": [
+    { "text": "Same pan, same onions, two openings. Which one would stop your scroll? Answer in the comments." },
+    { "text": "I tested the hook first, then cooked. Three seconds decided whether the recipe got watched." },
+    { "text": "Hook A: the mistake. Hook B: the result. Guess which one kept you watching." },
+    { "text": "Dinner in sixty seconds, and the opening line is the only thing I changed." }
+  ] },
+  { "module": "reel_captions", "title": "Before and after edit", "options": [
+    { "text": "Raw clip on the left, finished edit on the right. The difference is mostly pacing and sound." },
+    { "text": "Two minutes of cutting, one caption style, and a beat-matched transition. Watch it twice." }
+  ] },
+  { "module": "reel_captions", "title": "Creator tool I use every day", "options": [
+    { "text": "The free tool that replaced my most expensive subscription. Save this before you buy another app." },
+    { "text": "Honest review, no sponsor: this is the one tool I open first every morning. Tell me yours." },
+    { "text": "Three tools, zero cost, and I still ship a video every week. Here they are." }
+  ] },
+  { "module": "reel_captions", "title": "Lighting trick under 30 dollars", "options": [
+    { "text": "Thirty dollars of light and one white wall. This is the setup that made my face look awake." },
+    { "text": "Turn off the ceiling light. Put a warm lamp to your side. You are welcome." }
+  ] },
+  { "module": "reel_captions", "title": "Quitting my job announcement", "options": [
+    { "text": "Last day at my job is Friday. The channel is now my job, so expect more videos, not fewer." },
+    { "text": "I quit. Honest reason: I wanted to make things every day. Here is what happens next." },
+    { "text": "Day one of full-time creating. Coffee, camera, and a spreadsheet that scares me a little." }
+  ] },
+  { "module": "reel_captions", "title": "Brand pitch template", "options": [
+    { "text": "This is the pitch email that got three replies out of five. Copy it, change the details, send it tomorrow." },
+    { "text": "A brand pitch in four lines. Hook, audience, one idea, and a clear ask. Try it on your next outreach." }
+  ] },
+  { "module": "reel_captions", "title": "Storytime opener for a failed launch", "options": [
+    { "text": "Story time: my first launch sold eleven copies. Two of them were to my mum. Here is what I changed." },
+    { "text": "The launch that flopped taught me more than the one that worked. Part one starts with the spreadsheet." }
+  ] },
+  { "module": "reel_captions", "title": "Live stream highlights", "options": [
+    { "text": "Two hours live from a laptop. These are the three moments the chat wanted replayed." },
+    { "text": "Best bits from last night's stream, cut to under a minute. Full replay is on the channel." },
+    { "text": "Chat picked the topic, I did the rest. Here is what happened when I let them decide." }
+  ] },
+
+  { "module": "visuals", "title": "Product photo for a tripod review", "options": [
+    { "image": { "headline": "TRIPOD TEST", "bg": "#ff6b6b", "fg": "#ffffff", "style": "bold" } },
+    { "image": { "headline": "Stable under 5 kg", "bg": "#fff5f5", "fg": "#c92a2a", "style": "minimal" } },
+    { "image": { "headline": "Does it wobble?", "bg": "#2f3640", "fg": "#f5f6fa", "style": "split" } }
+  ] },
+  { "module": "visuals", "title": "Creator workspace visual", "options": [
+    { "image": { "headline": "MY SPACE, DAILY", "bg": "#0b132b", "fg": "#5bc0be", "style": "bold" } },
+    { "image": { "headline": "Where the videos happen", "bg": "#1c2541", "fg": "#ffffff", "style": "face" } }
+  ] },
+  { "module": "visuals", "title": "Carousel cover for a budgeting post", "options": [
+    { "image": { "headline": "SPEND LESS, MAKE MORE", "bg": "#2e7d32", "fg": "#ffffff", "style": "bold" } },
+    { "image": { "headline": "My three-line budget", "bg": "#e8f5e9", "fg": "#1b5e20", "style": "minimal" } },
+    { "image": { "headline": "Where the money went", "bg": "#1b5e20", "fg": "#c8e6c9", "style": "split" } },
+    { "image": { "headline": "Budget with me", "bg": "#fff8e1", "fg": "#e65100", "style": "face" } }
+  ] },
+  { "module": "visuals", "title": "Podcast episode artwork", "options": [
+    { "image": { "headline": "EP. 12: THE BORING PART", "bg": "#3d0066", "fg": "#ffd166", "style": "bold" } },
+    { "image": { "headline": "Money talk, no jargon", "bg": "#ffd166", "fg": "#3d0066", "style": "minimal" } }
+  ] },
+  { "module": "visuals", "title": "Quote card on consistency", "options": [
+    { "image": { "headline": "Show up. Then edit.", "bg": "#f8f0e3", "fg": "#333333", "style": "minimal" } },
+    { "image": { "headline": "SHOW UP. THEN EDIT.", "bg": "#333333", "fg": "#f8f0e3", "style": "bold" } },
+    { "image": { "headline": "Done beats perfect", "bg": "#a7c4bc", "fg": "#1f2d2a", "style": "split" } }
+  ] },
+  { "module": "visuals", "title": "Behind-the-scenes shot for a filming day", "options": [
+    { "image": { "headline": "BTS: 14 VIDEOS, 1 DAY", "bg": "#ff9e00", "fg": "#1a1a1a", "style": "bold" } },
+    { "image": { "headline": "The messy side of filming", "bg": "#1a1a1a", "fg": "#ff9e00", "style": "face" } }
+  ] },
+  { "module": "visuals", "title": "Stats card for a month of posting", "options": [
+    { "image": { "headline": "30 POSTS. 1 MONTH.", "bg": "#0d1b2a", "fg": "#e0e1dd", "style": "bold" } },
+    { "image": { "headline": "What the month looked like", "bg": "#e0e1dd", "fg": "#0d1b2a", "style": "split" } },
+    { "image": { "headline": "Numbers, no spin", "bg": "#415a77", "fg": "#ffffff", "style": "minimal" } }
+  ] },
+  { "module": "visuals", "title": "Thumbnail library preview", "options": [
+    { "image": { "headline": "50 THUMBNAILS, 1 STYLE", "bg": "#7400b8", "fg": "#ffffff", "style": "bold" } },
+    { "image": { "headline": "Templates you can reuse", "bg": "#f3e8ff", "fg": "#5a189a", "style": "minimal" } }
+  ] },
+  { "module": "visuals", "title": "Lighting diagram for a small room", "options": [
+    { "image": { "headline": "Three lights. One room.", "bg": "#212529", "fg": "#ffc107", "style": "bold" } },
+    { "image": { "headline": "Key, fill and back light", "bg": "#ffc107", "fg": "#212529", "style": "split" } },
+    { "image": { "headline": "Where to put the lamp", "bg": "#343a40", "fg": "#f8f9fa", "style": "face" } }
+  ] },
+  { "module": "visuals", "title": "Creator sign-off card", "options": [
+    { "image": { "headline": "SEE YOU IN THE NEXT ONE", "bg": "#ff4d6d", "fg": "#ffffff", "style": "bold" } },
+    { "image": { "headline": "Thanks for watching", "bg": "#fff0f3", "fg": "#800f2f", "style": "minimal" } }
+  ] }
+]
