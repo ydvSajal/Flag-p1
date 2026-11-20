@@ -201,7 +201,22 @@ Task list with time boxes and acceptance tests: `docs/HANDOVER.md` section 5.
 
 ## 7. Run locally
 
-Commands below exist once task T0 lands. Until then see `docs/FLAGSMITH-SETUP.md`.
+### Quickest start: no accounts needed (local mode)
+
+With the Flagsmith, Google, Neon and R2 variables empty, everything runs on stand-ins (`docs/LOCAL-DEV.md`): PGlite database, flags from `apps/api/local-flags.json`, dev login, local image uploads.
+
+```bash
+cp .env.example .env        # defaults are fine; ALLOW_DEV_LOGIN=1, ADMIN_EMAILS=admin@picklab.local
+pnpm install
+pnpm dev                    # API on :3001, web on :3000 (web proxies /api to the API)
+pnpm seed                   # in another terminal; idempotent, needs the API running
+```
+
+Open http://localhost:3000. Creator: `/login` (dev login, any email). Admin pages: sign in as `admin@picklab.local`, then `/admin` and `/admin/live`. Change `local-flags.json` (re-read every 10 s) to try waves, module off and the kill switch. In local mode the voting view comes from `?layout=swipe` (grid, swipe, this_or_that, yes_no).
+
+Checks: `pnpm typecheck && pnpm lint && pnpm test` (13 shared + 66 API tests, no infrastructure).
+
+### With real Flagsmith
 
 ```bash
 # 1. Flagsmith (local)
