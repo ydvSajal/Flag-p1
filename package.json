@@ -15,7 +15,8 @@
     "db:migrate": "pnpm --filter @picklab/api db:migrate",
     "seed": "tsx --tsconfig scripts/tsconfig.json scripts/seed.ts",
     "simulate": "tsx --tsconfig scripts/tsconfig.json scripts/simulate.ts",
-    "typecheck:scripts": "tsc -p scripts"
+    "typecheck:scripts": "tsc -p scripts",
+    "flagsmith:setup": "tsx --tsconfig scripts/tsconfig.json scripts/flagsmith-setup.ts"
   },
   "type": "module",
   "devDependencies": {

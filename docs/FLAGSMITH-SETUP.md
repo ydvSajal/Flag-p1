@@ -164,3 +164,19 @@ No exposures: variation without `key`; flag requested before `identify`; page cl
 No conversions: event name differs by case/spelling; different identity id than the exposure; conversion happened before the first exposure.
 Exposures on one arm only: the flag is read in one place and rendered from another; read it once in `apps/web/lib/session.ts` and render that value. Flat conversions with rising exposures: `trackEvent` not firing, or called with a different identity than the exposure (call it when the last set is saved, never on page load). Reassigned visitors: identity regenerated per request instead of the persisted guest id. No fallback when Flagsmith is down: add the default flag handler on both SDKs (D11f).
 Nothing in results: no warehouse connected on that environment; identity outside rollout; timestamps outside window; batch over 2 MiB; enable SDK debug logging.
+
+## 7. Verified against self-hosted Flagsmith (local, 2026-11-21)
+
+Instance: official compose, project `picklab-flagsmith`, mapped to port 8100 (8000 was taken), `EXPERIMENTATION_ENABLED=true`. JS SDK 12.5.0, Node SDK 9.4.0.
+
+Worked
+- `pnpm flagsmith:setup` (`scripts/flagsmith-setup.ts`, admin REST API) on Development: 4 segments, 6 flags, 3 keyed variations, 6 segment overrides (19 changes). Second run: "no changes".
+- Client API `POST /api/v1/identities/` with traits: wave 1 tester gets thumbnails+captions only; wave 2 tester gets no module; creator gets all four (D3). `voting_layout` reports `variant: "swipe"` for a swipe bucket and `variant: "control"` for control (the app maps unknown/`control` to `grid`).
+
+REST paths used: `GET /environments/?project=<id>`, `GET|POST /projects/<id>/segments/`, `GET|POST /projects/<id>/features/` (`type: MULTIVARIATE`, `initial_value`), `POST /projects/<id>/features/<f>/mv-options/` (`key` is settable here, read-only in the nested create), `GET /environments/<key>/featurestates/?feature=<f>`, `PATCH /features/featurestates/<id>/` (weights), `GET /features/feature-segments/?environment=<id>&feature=<f>`, `POST /environments/<key>/features/<f>/create-segment-override/`. Schema: `/api/v1/swagger.json`.
+
+The experiment API exists in this build: `/environments/<key>/experiment-metrics/` (aggregation `occurrence`, direction `up`), `/environments/<key>/experiments/` (+ `start`, `exposures`, `results`, `complete`), `/environments/<key>/warehouse-connections/` (type `flagsmith`). Nothing is created yet; no warehouse connection exists on either environment.
+
+SDK note (JS 12.5.0 source): `getExperimentFlag` records an exposure only when the flag carries `experiment.inExperiment` (a running experiment) and flags came from the server, so there are no exposures before the experiment starts.
+
+Not verified yet: API server path with `FLAGSMITH_SERVER_KEY` (cache, kill switch, 503/403, outage fallback), browser path in Next, weights to swipe=100 and identity override, `trackEvent` reaching `/api/v1/events/`, metric/experiment creation and exposures, the Production environment.

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# NOTE: unverified CLI draft. The verified path is scripts/flagsmith-setup.ts (admin REST API):
+#   pnpm flagsmith:setup
 # Creates PickLab's Flagsmith flags, voting_layout variants, segments and overrides
 # using the Flagsmith CLI v2 (see docs/FLAGSMITH-SETUP.md section 2 and 4).
 #
