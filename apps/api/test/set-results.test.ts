@@ -4,8 +4,6 @@ import { describe, expect, it } from 'vitest';
 import { responses, sessions, setResults } from '../src/db/schema';
 import { answers, as, makeApp, makeSet, makeUser, type TestUser } from './helpers';
 
-type T = Awaited<ReturnType<typeof makeApp>>;
-
 /** n sets of `options` choices, a consented tester with an open session in `layout`, and its first set. */
 const setup = async (layout: Layout, o: { sets?: number; options?: number; perSession?: number } = {}) => {
   const t = await makeApp();
