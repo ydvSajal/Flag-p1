@@ -1,0 +1,7 @@
+[
+  {
+    "type": "ALL",
+    "conditions": [{ "property": "role", "operator": "EQUAL", "value": "creator" }],
+    "rules": []
+  }
+]

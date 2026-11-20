@@ -1,0 +1,7 @@
+[
+  {
+    "type": "ALL",
+    "conditions": [{ "property": "wave", "operator": "EQUAL", "value": "2" }],
+    "rules": []
+  }
+]
