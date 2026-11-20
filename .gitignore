@@ -1,0 +1,11 @@
+node_modules
+.next
+dist
+coverage
+.env
+.env.*
+!.env.example
+flagsmith/flagsmith.env
+*.log
+.DS_Store
+.vercel
