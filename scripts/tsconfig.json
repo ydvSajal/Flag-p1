@@ -5,8 +5,7 @@
     "typeRoots": ["../apps/api/node_modules/@types"],
     "baseUrl": ".",
     "paths": {
-      "@picklab/shared": ["../packages/shared/src/index.ts"],
-      "zod": ["../packages/shared/node_modules/zod"]
+      "@picklab/shared": ["../packages/shared/src/index.ts"]
     }
   },
   "include": ["*.ts", "lib"]

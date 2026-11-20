@@ -36,7 +36,14 @@ const main = async () => {
       options = set.options.map((o) => ({ kind: 'text', text: (o as { text: string }).text }));
     } else {
       const pngs = set.options.map((o) => renderPng((o as { image: ImageSpec }).image));
-      const sign = await api.post('/api/uploads/sign', { files: pngs.map((p) => ({ contentType: 'image/png', size: p.length })) });
+      const files = pngs.map((p) => ({ contentType: 'image/png', size: p.length }));
+      let sign = await api.post('/api/uploads/sign', { files });
+      // The API allows 20 uploads/min per creator: wait out the sliding window instead of failing.
+      for (let tries = 0; sign.status === 429 && tries < 20; tries++) {
+        console.log('  upload rate limit hit, waiting 10s...');
+        await new Promise((r) => setTimeout(r, 10_000));
+        sign = await api.post('/api/uploads/sign', { files });
+      }
       if (!sign.ok) die(`sign failed for "${set.title}": ${sign.status} ${JSON.stringify(sign.json)}`);
       options = [];
       for (const [i, png] of pngs.entries()) {

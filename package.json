@@ -13,8 +13,8 @@
     "test": "pnpm -r test",
     "db:generate": "pnpm --filter @picklab/api db:generate",
     "db:migrate": "pnpm --filter @picklab/api db:migrate",
-    "seed": "tsx scripts/seed.ts",
-    "simulate": "tsx scripts/simulate.ts",
+    "seed": "tsx --tsconfig scripts/tsconfig.json scripts/seed.ts",
+    "simulate": "tsx --tsconfig scripts/tsconfig.json scripts/simulate.ts",
     "typecheck:scripts": "tsc -p scripts"
   },
   "type": "module",
