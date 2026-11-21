@@ -203,3 +203,33 @@ Toggle helper used for the kill switch test: PATCH `/environments/<client key>/f
 - `PATCH` on `/environments/<key>/featurestates/<id>/` with nested `multivariate_feature_state_values` returns 200 but **does nothing**. Use `PUT` with the full feature state object (`scripts/flagsmith-setup.ts` does).
 - With weights swipe 100: 20 of 20 new identities received `swipe`. Restored to swipe 10 / others 0. This is the Stream B demo (change the split in Flagsmith, new visitors get the new view, no deploy) at API level. Existing assignment for an identity changes when weights change, as the docs warn.
 - In the dashboard the same change is a normal edit; this note only matters for scripts.
+
+### 7.3 Experiment pipeline, verified (local, 2026-11-21)
+
+`pnpm flagsmith:experiment --probe` (`scripts/flagsmith-experiment.ts`) ran the whole pipeline on a throwaway flag `exp_probe` in Development (control `a`, variations `b`, `c`) and cleaned up afterwards. `voting_layout` was not touched; `pnpm flagsmith:setup` still says "no changes". A JSON compare of the flags, segments and feature states in Development before and after run 1 showed them identical, and the identity count was back to 173. What stays: the warehouse connection, the metric `session_completed`, the SDK events in Flagsmith's `events` table (no delete API), and soft-deleted probe experiments.
+
+Endpoints and payloads (admin token, `/api/v1`, `<key>` = environment client key)
+- Warehouse: `POST /environments/<key>/warehouse-connections/` `{"warehouse_type":"postgres","config":{"source":"flagsmith_database"}}` -> 201, status `connected`. One connection per environment (a second one returns 409).
+- **Type `flagsmith` does not work self-hosted.** Created it, then `POST /api/v1/events/` returned 404 `"This environment does not store events in Flagsmith."`. That type reads from ClickHouse (`EXPERIMENTATION_CLICKHOUSE_URL`, not set in our compose). The events endpoint only accepts events when the connection is postgres + `source: flagsmith_database`, which works only on self-hosted with Postgres. Deleted the `flagsmith` one and created the postgres one.
+- Metric: `POST /environments/<key>/experiment-metrics/` `{"name":"session_completed","aggregation":"occurrence","direction":"up","definition":{"version":1,"event":"session_completed"}}`. `definition.version` is required.
+- Experiment: `POST /environments/<key>/experiments/` `{"feature":<id>,"name":"exp_probe_v1","hypothesis":"...","metrics":[{"metric":<metric id>,"expected_direction":"increase"}],"experiment_rollout":{"enabled":true,"rollout_percentage":100,"feature_state_value":{"type":"string","value":"a"},"multivariate_feature_state_values":[{"multivariate_feature_option":<b>,"percentage_allocation":50},{"multivariate_feature_option":<c>,"percentage_allocation":0}]}}` -> 201, status `created`. There is no "primary" field; we attach one metric. Then `POST .../experiments/<id>/start/` -> `running`, and `POST .../complete/` -> `completed`.
+- Read: `POST .../exposures/refresh/` and `POST .../results/refresh/` (202, at most once per 5 min, the task processor computes it in about 2 s), then `GET .../exposures/` and `GET .../results/`. Both return `null` until a refresh has run. A refresh after `complete` is allowed once and gives `is_final: true`.
+
+Results (two clean runs, 120 identities each, 60% tracked `session_completed`)
+
+| Run | Exposures control / b / c | Conversions control / b | Inference for b | SRM |
+| --- | --- | --- | --- | --- |
+| 1 | 59 / 61 / 0 | 36 / 36 | lift -3.3%, CI -31.8%..+25.2%, chance to win 41% | `srm_p_value: null` |
+| 2 | 64 / 56 / 0 | 38 / 34 | lift +2.3%, CI -27.9%..+32.4%, chance to win 56% | `srm_p_value: null` |
+
+SDK counts matched the server's exposure counts exactly. Both arms had at least 50 identities and 5 conversions, so `inference` was filled in, and the result was inconclusive (the CI crosses 0), as expected with identical rates. The 50-per-arm rule is in the code: below `RESULTS_MIN_IDENTITIES_PER_VARIANT = 50` (or `RESULTS_MIN_CONVERSIONS_PER_VARIANT = 5` for occurrence metrics) `inference.<variant>` is `null`, and the dashboard shows that as *Collecting data*. `excluded_identities: 0`.
+
+Quirks
+- **Gate G3: weight 0 inside an experiment split is accepted.** `c` at 0 was stored, got 0 identities, and appears neither in exposures nor in results. grid 50 / swipe 50 / this_or_that 0 / yes_no 0 (D2) is a valid payload.
+- **Creating an experiment changes the flag right away, before `start`.** Create zeroes the flag's environment-default weights (b 10 -> 0, verified) and adds a system rollout segment override that serves the split at once. Before start, 10 new identities got 5 control / 5 b (run 2: 4 / 6), but none had `experiment.inExperiment`, so no exposures were sent. Exposures count only from `start` on. For `voting_layout` this means: creating `voting_layout_v1` already shows swipe to 50% of users, so do not create it before 28 Nov (D1). `--real` creates it but does not start it, and refuses to run without `--yes`.
+- `GET .../experiments/` returns `feature` as an object (`{id, name, ...}`), not an id. Because of this, the lock check in `flagsmith-setup.ts` never matched. It is fixed now and treats any experiment that is not completed as locking the flag. The fix typechecks, but no experiment existed on `voting_layout` to exercise it.
+- `srm_p_value` stayed `null` with 120 identities, even though the docs say the SRM check runs from 100 identities. The server reads the expected split from the environment default, and the create had zeroed it (a TODO in the Flagsmith source). Do not count on the SRM warning.
+- Deleting the flag also removes its experiment (404 afterwards) and its rollout segment does not show in the segment list.
+- SDK in Node: load `@flagsmith/flagsmith/isomorphic`. The default entry uses `XMLHttpRequest`, and under tsx the default import of the CJS bundle has no `.init`. Methods used: `init({ environmentID, api, enableEvents: true, eventProcessorConfig: { eventsApiUrl } })`, `identify(id)`, `getExperimentFlag(name)` (returns `variant: "control"` for control and `experiment.inExperiment` once running), `trackEvent(name)`, `flushEvents()`, `close(ms)`. One instance with `identify()` per identity worked for 130 identities.
+
+Reproduce: `set -a; . flagsmith/flagsmith.env; set +a; pnpm flagsmith:experiment --probe` (about 1 min, leaves no flag behind). Real experiment, on or after 28 Nov only: `pnpm flagsmith:experiment --real --yes`, then start it in the dashboard or with `POST .../experiments/<id>/start/`.
