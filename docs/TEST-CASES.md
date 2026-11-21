@@ -180,7 +180,7 @@ Rule: a test asserts behaviour through HTTP and, where the case says so, one dat
 | E-27 | Live page: a new visitor appears within 5 s with wave, view badge, module, progress, status; the pause toggle stops refresh; readable in a screen recording |
 | E-28 | New set: only modules open to creators are offered |
 | E-29 | Image set: add 2-4 files, preview, remove; Publish is disabled under 2 options |
-| E-30 | A 6 MB file and a gif are rejected with a clear message; a 4000 px image is resized before upload |
+| E-30 | A 30 MB file and a gif are rejected with a clear message; a 4000 px photo, including one over 5 MB, is resized to 1600 px before upload and accepted (the 5 MB limit applies to the resized file on the server, the original may be up to 25 MB) |
 | E-31 | Text set: character count, limit enforced |
 | E-32 | Publish goes to the results page; the set appears in My sets and in a visitor's session |
 | E-33 | Results: bars ranked by score, winner highlighted, voter count, note under 10 voters |

@@ -54,7 +54,10 @@ export const LIMITS = {
   textMax: 280,
   optionsMin: 2,
   optionsMax: 4,
+  /** Server limit, applied to the (already resized) file that is uploaded. */
   uploadMaxBytes: 5 * 1024 * 1024,
+  /** Client limit on the original file picked by the creator, before it is resized to 1600 px. */
+  uploadSourceMaxBytes: 25 * 1024 * 1024,
   uploadsMaxFiles: 4,
   uploadTypes: ['image/png', 'image/jpeg', 'image/webp'],
   setsPerSessionDefault: 5,

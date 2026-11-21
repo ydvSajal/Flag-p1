@@ -10,7 +10,7 @@ const toBlob = (canvas: HTMLCanvasElement, type: string): Promise<Blob | null> =
 /** Validates, then resizes to max 1600 px (aspect kept) and re-encodes as webp (jpeg fallback). Throws Error with a user-facing message. */
 export const prepareImage = async (file: File): Promise<PreparedImage> => {
   if (!(LIMITS.uploadTypes as readonly string[]).includes(file.type)) throw new Error('Use a PNG, JPG or WebP image.');
-  if (file.size > LIMITS.uploadMaxBytes) throw new Error('That image is over 5 MB. Pick a smaller one.');
+  if (file.size > LIMITS.uploadSourceMaxBytes) throw new Error('That image is over 25 MB. Pick a smaller one.');
 
   let bitmap: ImageBitmap;
   try {
