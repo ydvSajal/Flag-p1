@@ -22,12 +22,12 @@ Consent, home with live module counts, and full 5-set sessions in **all four vie
 ## NOT verified (do these first)
 
 1. **Pixel-level look.** Screenshots time out in this browser session, so nobody has looked at the design. Check visual polish, swipe drag by finger/mouse, and the image upload flow from the creator form (file picker + browser resize). The API side of uploads is tested by the seed run.
-2. **Real Flagsmith is untested.** Browser SDK path (`FlagsProvider`, `getExperimentFlag`, `trackEvent`) and `@flagsmith/nodejs` were written against the installed `.d.ts` but never ran against a server. `scripts/flagsmith-setup.sh` has 9 `# verify:` lines (CLI flags unconfirmed). Gates G1, G2, G3 are still open. In local mode the view comes from `?layout=`.
+2. **Real Flagsmith: server path verified** (waves, creators, kill switch 503, outage fallback; see FLAGSMITH-SETUP 7.1) and the REST setup script `pnpm flagsmith:setup` works. **Still untested:** the browser SDK path (weights, identity override, `trackEvent`, exposures) and the experiment (no warehouse, metric or experiment created yet). Gates G1-G3 open.
 3. **Google sign-in is untested** (no credentials). Dev login is what was exercised.
 4. **R2 uploads are untested.** Local-disk uploads only.
 5. Flagsmith dashboard link paths on the Stats page are guesses (`/features?search=`, `/experiments`, `/users`).
 
-Local DB note: `apps/api/.data/pglite` holds 68 seeded sets plus 5 test sessions from this verification. Delete `apps/api/.data` to reset (reseeding takes about 5 minutes because of the upload rate limit).
+Local DB note: `apps/api/.data` (PGlite) was deleted during the Flagsmith checks, so the DB starts empty: run `pnpm seed` (about 5 minutes because of the upload rate limit).
 
 ## Deviations from the docs (all intentional, all small)
 

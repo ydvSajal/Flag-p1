@@ -180,3 +180,20 @@ The experiment API exists in this build: `/environments/<key>/experiment-metrics
 SDK note (JS 12.5.0 source): `getExperimentFlag` records an exposure only when the flag carries `experiment.inExperiment` (a running experiment) and flags came from the server, so there are no exposures before the experiment starts.
 
 Not verified yet: API server path with `FLAGSMITH_SERVER_KEY` (cache, kill switch, 503/403, outage fallback), browser path in Next, weights to swipe=100 and identity override, `trackEvent` reaching `/api/v1/events/`, metric/experiment creation and exposures, the Production environment.
+
+### 7.1 API server path, verified (local, 2026-11-21)
+
+API run with `FLAGSMITH_SERVER_KEY` (Development) against the local Flagsmith, on a fresh database, using curl:
+
+| Check | Result |
+| --- | --- |
+| Wave 1 guest `GET /api/modules` | `thumbnails`, `captions` only |
+| Wave 2 and wave 3 guests | no modules (no segment override yet) |
+| Creator (dev login) | all four modules (D3) |
+| `voting_enabled` off in Flagsmith | within 12 s `votingEnabled=false`, `POST /api/sessions` returns 503 |
+| `voting_enabled` back on | restored within 12 s |
+| Flagsmith unreachable, no cache (API pointed at a dead URL) | `{"votingEnabled":true,"modules":[]}`, session start refused with 403 (TRD 6) |
+
+Still not verified: module-off mid-session 403 on set results through a real flag change, a `wave_2` override appearing live, and the whole browser SDK path (identity override, weight change, `trackEvent` reaching the events endpoint, experiment and exposures). The experiment endpoints exist (`/environments/<key>/experiment-metrics/`, `/experiments/`, `/warehouse-connections/`) but no warehouse connection, metric or experiment was created.
+
+Toggle helper used for the kill switch test: PATCH `/environments/<client key>/featurestates/<id>/` with `{"enabled": false}` using the admin token.
