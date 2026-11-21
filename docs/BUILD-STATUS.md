@@ -13,7 +13,7 @@ Branch `t/T0` holds everything merged. `main` is untouched. Nothing is pushed.
 | `scripts` | `seed` (idempotent, PNG renderer), `simulate`, `flagsmith-setup.sh` (draft) | seed twice = 0 new sets; simulate 40 visitors, no 5xx |
 | `flagsmith/` | Official docker-compose with dev header | Not started (no Docker run) |
 
-Run it: see README section 7 ("Quickest start"). No external accounts needed.
+Run it: see README section 7 ("Quickest start"). Dates and exact commands for 27-29 Nov: `docs/RUNBOOK.md`.
 
 ## Verified in a real browser (21 Nov, DOM-driven, no screenshots)
 
