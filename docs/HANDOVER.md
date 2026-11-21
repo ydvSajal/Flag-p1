@@ -12,7 +12,7 @@ PickLab: creators post 2-4 options, guests vote, Flagsmith controls which module
 4. `FRONTEND.md`: screens, only if you own web tasks. Apply the errata in section 8 below.
 5. `TEST-CASES.md`: the tests your task must make pass.
 
-Do not read `PickLab-Track1.md`, `DOCS.md` or `docs/archive/`. They are outdated.
+Do not read `docs/archive/`. They are outdated.
 
 If documents disagree: `DUE-DILIGENCE.md` decisions > `SCOPE.md` > `PRD.md` / `TRD.md` > `FRONTEND.md`.
 

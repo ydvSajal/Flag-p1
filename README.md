@@ -8,7 +8,7 @@ Built for **Toggle Wars, Flagsmith Experimentation Hackathon, Track 01**.
 Build 26-27 Nov 2026 · real users 28 Nov · submit 29 Nov before 8 PM IST.
 Expected audience: 50-100 people. **The product and how Flagsmith drives it matter more than the numbers**, but the experiment must be wired correctly and its result stated honestly (decisions D10-D12 in `docs/DUE-DILIGENCE.md`). Judged on Use of Flagsmith, Impact, Creativity and the demo video (about 25%).
 
-> Status: planning done, code starts 26 Nov (task T0). Everything below is the plan every dev builds against.
+> Status: local build done and verified (see `docs/BUILD-STATUS.md`). Deploy steps: `docs/DEPLOY.md`.
 
 ---
 
@@ -25,7 +25,7 @@ Expected audience: 50-100 people. **The product and how Flagsmith drives it matt
 **If docs disagree, higher wins:**
 `docs/DUE-DILIGENCE.md` decisions (D1-D12) > `docs/SCOPE.md` > `docs/PRD.md` / `docs/TRD.md` > `docs/FRONTEND.md`.
 
-**Ignore these, they are outdated:** `PickLab-Track1.md`, `DOCS.md` (upstream Flagsmith readme), `docs/archive/`.
+**Ignore these, they are outdated:** `docs/archive/` (includes the old `PickLab-Track1.md`).
 
 ---
 
