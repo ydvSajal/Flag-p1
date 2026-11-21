@@ -236,3 +236,12 @@ Quirks
 - SDK in Node: load `@flagsmith/flagsmith/isomorphic`. The default entry uses `XMLHttpRequest`, and under tsx the default import of the CJS bundle has no `.init`. Methods used: `init({ environmentID, api, enableEvents: true, eventProcessorConfig: { eventsApiUrl } })`, `identify(id)`, `getExperimentFlag(name)` (returns `variant: "control"` for control and `experiment.inExperiment` once running), `trackEvent(name)`, `flushEvents()`, `close(ms)`. One instance with `identify()` per identity worked for 130 identities.
 
 Reproduce: `set -a; . flagsmith/flagsmith.env; set +a; pnpm flagsmith:experiment --probe` (about 1 min, leaves no flag behind). Real experiment, on or after 28 Nov only: `pnpm flagsmith:experiment --real --yes`, then start it in the dashboard or with `POST .../experiments/<id>/start/`.
+
+### 7.5 Real browser against real Flagsmith (Chrome, 2026-11-21)
+
+Web (dev server) with `NEXT_PUBLIC_FLAGSMITH_*` set and the API on a Development server key, no `?layout=`:
+
+- A wave-2 visitor saw "Your group opens soon". After a `wave_2` segment override on `module_captions` was created in Flagsmith, **Captions appeared on the already-open page after 13 s with a NEW badge, no reload** (X-04).
+- With `voting_layout` weights swipe 100, the next session rendered the swipe view from the live flag.
+- **Identity override works, but you must give the override a variation weight.** `POST /environments/<key>/identities/<identity id>/featurestates/` with `multivariate_feature_state_values: [{ multivariate_feature_option: <this_or_that option id>, percentage_allocation: 100 }]` made the client API return `this_or_that` for that identity (before: `swipe`), and the next session in the browser was this-or-that (X-03). A plain value override would not set the variation.
+- Test overrides were deleted afterwards; `pnpm flagsmith:setup` reports no changes.
