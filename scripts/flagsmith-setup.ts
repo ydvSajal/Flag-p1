@@ -145,7 +145,9 @@ const main = async () => {
     if (experiments.some((x) => x.feature === layout.id && (x.status === 'running' || x.status === 'paused'))) {
       console.warn(`! ${FLAG_VOTING_LAYOUT} weights differ but an experiment locks the flag: left as is`);
     } else {
-      await call('PATCH', `/features/featurestates/${envState.id}/`, {
+      // PUT with the full state: a PATCH with nested weights returns 200 but is silently ignored (verified 2026-11-21).
+      await call('PUT', `/environments/${env.api_key}/featurestates/${envState.id}/`, {
+        ...envState,
         multivariate_feature_state_values: Object.entries(WEIGHTS).map(([key, w]) => ({
           ...(envState.multivariate_feature_state_values.find((v) => v.multivariate_feature_option === optionId[key]) ?? {}),
           multivariate_feature_option: optionId[key],

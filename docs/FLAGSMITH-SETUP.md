@@ -197,3 +197,9 @@ API run with `FLAGSMITH_SERVER_KEY` (Development) against the local Flagsmith, o
 Still not verified: module-off mid-session 403 on set results through a real flag change, a `wave_2` override appearing live, and the whole browser SDK path (identity override, weight change, `trackEvent` reaching the events endpoint, experiment and exposures). The experiment endpoints exist (`/environments/<key>/experiment-metrics/`, `/experiments/`, `/warehouse-connections/`) but no warehouse connection, metric or experiment was created.
 
 Toggle helper used for the kill switch test: PATCH `/environments/<client key>/featurestates/<id>/` with `{"enabled": false}` using the admin token.
+
+### 7.2 Changing `voting_layout` weights through the API (verified, local, 2026-11-21)
+
+- `PATCH` on `/environments/<key>/featurestates/<id>/` with nested `multivariate_feature_state_values` returns 200 but **does nothing**. Use `PUT` with the full feature state object (`scripts/flagsmith-setup.ts` does).
+- With weights swipe 100: 20 of 20 new identities received `swipe`. Restored to swipe 10 / others 0. This is the Stream B demo (change the split in Flagsmith, new visitors get the new view, no deploy) at API level. Existing assignment for an identity changes when weights change, as the docs warn.
+- In the dashboard the same change is a normal edit; this note only matters for scripts.
