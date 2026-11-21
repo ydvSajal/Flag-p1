@@ -141,8 +141,10 @@ const main = async () => {
   const current = new Map(envState.multivariate_feature_state_values.map((v) => [v.multivariate_feature_option, v.percentage_allocation]));
   const drift = Object.entries(WEIGHTS).some(([key, w]) => current.get(optionId[key] ?? -1) !== w);
   if (drift) {
-    const experiments = await list<{ feature: number; status: string }>(`/environments/${env.api_key}/experiments/`).catch(() => []);
-    if (experiments.some((x) => x.feature === layout.id && (x.status === 'running' || x.status === 'paused'))) {
+    // The list returns `feature` as an object ({ id, name, ... }), not an id (verified 7.3).
+    const experiments = await list<{ feature: number | { id: number }; status: string }>(`/environments/${env.api_key}/experiments/`).catch(() => []);
+    // Any non-completed experiment owns the split (create already zeroes the defaults, verified 7.3).
+    if (experiments.some((x) => (typeof x.feature === 'number' ? x.feature : x.feature.id) === layout.id && x.status !== 'completed')) {
       console.warn(`! ${FLAG_VOTING_LAYOUT} weights differ but an experiment locks the flag: left as is`);
     } else {
       // PUT with the full state: a PATCH with nested weights returns 200 but is silently ignored (verified 2026-11-21).
