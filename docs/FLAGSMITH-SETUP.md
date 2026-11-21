@@ -203,3 +203,7 @@ Toggle helper used for the kill switch test: PATCH `/environments/<client key>/f
 - `PATCH` on `/environments/<key>/featurestates/<id>/` with nested `multivariate_feature_state_values` returns 200 but **does nothing**. Use `PUT` with the full feature state object (`scripts/flagsmith-setup.ts` does).
 - With weights swipe 100: 20 of 20 new identities received `swipe`. Restored to swipe 10 / others 0. This is the Stream B demo (change the split in Flagsmith, new visitors get the new view, no deploy) at API level. Existing assignment for an identity changes when weights change, as the docs warn.
 - In the dashboard the same change is a normal edit; this note only matters for scripts.
+
+### 7.4 Browser SDK layout mapping, verified (Node, same init options as `apps/web/lib/flags.tsx`, 2026-11-21)
+
+`@flagsmith/flagsmith` 12.5.0 (`/isomorphic` `createFlagsmithInstance`): `init` with `enableEvents`, `eventProcessorConfig.eventsApiUrl`, then `identify(id, { role, wave })` and `getExperimentFlag('voting_layout')`. Weights swipe 100: 15 of 15 identities returned `{enabled: true, variant: 'swipe'}`. All weights 0: 10 of 10 returned `variant: 'control'`, which the app maps to `grid`. Weights restored to swipe 10. Not covered here (Chrome extension was disconnected): the rendered UI in a real browser, identity overrides, and events landing in an experiment (see 7.3).
