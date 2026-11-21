@@ -16,7 +16,8 @@
     "seed": "tsx --tsconfig scripts/tsconfig.json scripts/seed.ts",
     "simulate": "tsx --tsconfig scripts/tsconfig.json scripts/simulate.ts",
     "typecheck:scripts": "tsc -p scripts",
-    "flagsmith:setup": "tsx --tsconfig scripts/tsconfig.json scripts/flagsmith-setup.ts"
+    "flagsmith:setup": "tsx --tsconfig scripts/tsconfig.json scripts/flagsmith-setup.ts",
+    "flagsmith:experiment": "tsx --tsconfig scripts/tsconfig.json scripts/flagsmith-experiment.ts"
   },
   "type": "module",
   "devDependencies": {
