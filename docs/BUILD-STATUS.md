@@ -22,7 +22,7 @@ Consent, home with live module counts, and full 5-set sessions in **all four vie
 ## NOT verified (do these first)
 
 1. **Pixel-level look.** Screenshots time out in this browser session, so nobody has looked at the design. Check visual polish, swipe drag by finger/mouse, and the image upload flow from the creator form (file picker + browser resize). The API side of uploads is tested by the seed run.
-2. **Real Flagsmith: server path verified** (waves, creators, kill switch 503, outage fallback; see FLAGSMITH-SETUP 7.1) and the REST setup script `pnpm flagsmith:setup` works. **Still untested:** the browser SDK path (weights, identity override, `trackEvent`, exposures) and the experiment (no warehouse, metric or experiment created yet). Gates G1-G3 open.
+2. **Real Flagsmith: mostly verified on a local self-hosted instance** (FLAGSMITH-SETUP 7.1-7.4): module access by wave and creator, kill switch 503, outage fallback, weight change reaching new visitors, SDK layout mapping, `pnpm flagsmith:setup` (REST, idempotent), and the **whole experiment pipeline** (warehouse, metric, experiment, SDK exposures and conversions, results with a verdict on a throwaway flag; weight 0 inside the split is accepted, so gate G3 passes). **Still untested:** the web app clicked through in a browser against real Flagsmith, identity overrides, and the real `voting_layout_v1` experiment (deliberately not created). Gates G1 (does Track 01 allow self-hosted) and G2 on Railway are still open.
 3. **Google sign-in is untested** (no credentials). Dev login is what was exercised.
 4. **R2 uploads are untested.** Local-disk uploads only.
 5. Flagsmith dashboard link paths on the Stats page are guesses (`/features?search=`, `/experiments`, `/users`).
@@ -37,6 +37,14 @@ Local DB note: `apps/api/.data` (PGlite) was deleted during the Flagsmith checks
 - Seed data: reel captions and visuals have 10 sets each (target was 20+, S-01 warning). Thumbnails and captions have 24.
 - Seeding takes about 5 minutes because uploads are rate-limited to 20 files per minute.
 - TypeScript is pinned to 5.x, vitest to 3.x, eslint to 9.x.
+
+## Experiment runbook gotchas (found while testing, matter on 28 Nov)
+
+- **Creating the experiment changes the flag immediately**, before it starts: the default weights go to 0 and the 50/50 split is served at once, but exposures count only from start. So create `voting_layout_v1` only when you are ready to start (D1), then start it right away. `pnpm flagsmith:experiment --real --yes` creates it (not started).
+- **Self-hosted warehouse type must be `postgres` with source `flagsmith_database`**; type `flagsmith` cannot receive events here (events return 404).
+- **Change weights through the API with PUT, not PATCH** (PATCH is silently ignored). In the dashboard it is a normal edit.
+- The sample-ratio-mismatch warning did not appear at 120 identities; don't rely on it. The 50-identities-per-arm and 5-conversions rule is enforced server-side.
+- A probe run left test events in the local Flagsmith DB (no delete API). Use a fresh instance (`docker compose ... down -v`) for the real run if you want clean numbers.
 
 ## Open decisions for you
 
