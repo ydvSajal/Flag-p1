@@ -29,7 +29,7 @@ const Live = () => {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-3xl font-black tracking-tight">Live</h1>
         <div className="flex items-center gap-2">
-          <Link href="/admin" className="text-sm font-bold underline underline-offset-2">
+          <Link href="/admin" className="inline-flex min-h-8 items-center px-1 text-sm font-bold underline underline-offset-2">
             Stats
           </Link>
           <Button variant="secondary" aria-pressed={paused} onClick={() => setPaused((p) => !p)}>

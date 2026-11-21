@@ -9,15 +9,20 @@
   --muted: #6b6457;
   --line: #17140f;
   --soft-line: #ddd4c1;
-  --accent: #ff4d1c;
+  --accent: #d64118;
   --accent-ink: #ffffff;
-  --good: #1f9d55;
-  --bad: #d92d20;
+  --good: #197e44;
+  --bad: #c5291d;
   /* One colour per voting view. Defined once, reused on Live and Stats pages. */
-  --view-grid: #3b6ff5;
+  --view-grid: #335ee0;
   --view-swipe: #e8338f;
   --view-this_or_that: #e59a00;
   --view-yes_no: #14a06b;
+  /* Text colour on each view colour, all at least 4.5:1. */
+  --view-grid-ink: #ffffff;
+  --view-swipe-ink: #14120e;
+  --view-this_or_that-ink: #14120e;
+  --view-yes_no-ink: #14120e;
   --shadow: 4px 4px 0 0 var(--line);
 }
 
@@ -38,6 +43,7 @@
     --view-swipe: #ff5fae;
     --view-this_or_that: #ffb938;
     --view-yes_no: #39d49a;
+    --view-grid-ink: #14120e;
   }
 }
 

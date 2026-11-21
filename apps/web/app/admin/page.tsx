@@ -13,7 +13,7 @@ import { usePoll } from '@/lib/use-poll';
 const pct = (n: number, d: number) => (d > 0 ? Math.round((n / d) * 100) : 0);
 const th = 'px-3 py-2 text-left text-sm font-extrabold';
 const td = 'px-3 py-2.5 tabular-nums';
-const linkClass = 'underline underline-offset-2 font-bold';
+const linkClass = 'inline-flex min-h-8 items-center px-1 underline underline-offset-2 font-bold';
 
 const Stats = () => {
   const { data, error, loading, reload } = usePoll(api.getAdminOverview, null);

@@ -14,10 +14,10 @@ export const viewColor = (layout: Layout): string => `var(--view-${layout})`;
 
 export const ViewBadge = ({ layout, className }: { layout: Layout; className?: string }) => (
   <span
-    className={cn('inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold text-white', className)}
-    style={{ background: viewColor(layout) }}
+    className={cn('inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold', className)}
+    style={{ background: viewColor(layout), color: `var(--view-${layout}-ink)` }}
   >
-    <span className="size-1.5 rounded-full bg-white/80" aria-hidden />
+    <span className="size-1.5 rounded-full bg-current opacity-80" aria-hidden />
     {VIEW_LABEL[layout]}
   </span>
 );

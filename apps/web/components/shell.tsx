@@ -60,10 +60,10 @@ export const Footer = () => (
   <footer className="mx-auto mt-16 flex max-w-[720px] flex-wrap items-center justify-between gap-3 px-4 pb-10 text-sm text-muted">
     <span>PickLab. A live Flagsmith A/B test.</span>
     <span className="flex gap-4">
-      <Link href="/about-test" className="underline underline-offset-2">
+      <Link href="/about-test" className="inline-flex min-h-6 items-center underline underline-offset-2">
         About this test
       </Link>
-      <Link href="/privacy" className="underline underline-offset-2">
+      <Link href="/privacy" className="inline-flex min-h-6 items-center underline underline-offset-2">
         Privacy
       </Link>
     </span>

@@ -19,9 +19,9 @@ Run it: see README section 7 ("Quickest start"). No external accounts needed.
 
 Consent, home with live module counts, and full 5-set sessions in **all four views** (swipe buttons, grid radios + Confirm, this-or-that knockout with 2/3/4 options, yes/no), seeded PNGs load at 1280x720, done page. Dev login through the form, creator publish (captions), results page, admin Stats and Live with correct per-view numbers, and no horizontal overflow at 360 px on all 11 pages. One bug found and fixed: Next ignored the root .env (dev-login form was missing); `next.config.ts` now loads it.
 
-## Design audit (measured in the browser, no screenshots)
+## Design audit (measured in Chrome and by calculation, no screenshots)
 
-Found and fixed one real bug: the home progress card had 1.1:1 text contrast in dark mode (`Card` could not be re-coloured because `cn()` does not resolve Tailwind conflicts; `Card` now drops its default background when the caller sets one). Now 16:1. Remaining minor item: footer links ("About this test", "Privacy") are 20 px tall; WCAG 2.5.8 minimum is 24 px. Other audited pages (voting views, home) had 44 px targets. Not audited: creator and admin pages in dark mode.
+Dark mode, measured on live pages (home, voting views, creator, creator/new, admin, live, account, start): **no text below WCAG AA contrast, tap targets 44 px or at least 24 px**. Fixed along the way: (1) home progress card was 1.1:1 in dark mode (`Card` could not be re-coloured; `cn()` does not resolve Tailwind conflicts); (2) view badges used white text on view colours that fail AA (amber 1.7:1 in dark); each view now has its own text colour (`--view-*-ink`); (3) light-mode tokens below 4.5:1 darkened (accent #d64118, good #197e44, bad #c5291d, grid #335ee0); (4) footer and admin header links raised to at least 24 px. Light mode was checked by calculating the token pairs, not on screen (this browser cannot switch scheme). **Not checked by eye:** layout, spacing, visual polish, and whether the design feels right. Do that first.
 
 ## NOT verified (do these first)
 
