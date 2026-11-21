@@ -7,7 +7,8 @@ import { useFlags } from '@/lib/flags';
 
 const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => {
   const path = usePathname();
-  const active = path === href || (href !== '/' && path.startsWith(`${href}/`));
+  // "My sets" (/creator) must not stay active on its sibling /creator/new.
+  const active = path === href || (href !== '/' && path.startsWith(`${href}/`) && !(href === '/creator' && path.startsWith('/creator/new')));
   return (
     <Link
       href={href}

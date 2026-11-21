@@ -25,8 +25,10 @@ export const OptionMedia = ({ variant, title, index, frameClass = 'h-44 sm:h-56'
       </div>
     );
   }
+  // Text must never overflow its frame: the frame height is a minimum, not a fixed size.
+  const textFrame = frameClass.replace(/(^|\s)((?:[a-z]+:)?)h-/g, '$1$2min-h-');
   return (
-    <div className={cn('grid w-full place-items-center rounded-xl bg-sunken px-4 py-6', frameClass, className)}>
+    <div className={cn('grid w-full place-items-center rounded-xl bg-sunken px-4 py-6', textFrame, className)}>
       <p className="whitespace-pre-wrap break-words text-center text-lg font-bold leading-snug sm:text-xl">
         {variant.text ?? ''}
       </p>

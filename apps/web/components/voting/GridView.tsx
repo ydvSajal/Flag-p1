@@ -22,7 +22,11 @@ export const GridView = ({ set, onAnswer }: ViewProps) => {
 
   return (
     <div className="flex flex-1 flex-col gap-5">
-      <div role="radiogroup" aria-label={set.title} className="grid grid-cols-2 gap-3">
+      <div
+        role="radiogroup"
+        aria-label={set.title}
+        className={cn('grid gap-3', set.variants[0]?.kind === 'text' ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-2')}
+      >
         {set.variants.map((v, i) => {
           const on = selected === v.id;
           return (
