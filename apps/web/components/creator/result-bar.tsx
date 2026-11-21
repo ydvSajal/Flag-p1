@@ -18,7 +18,7 @@ export const ResultBar = ({ rank, pct, positive, winner, imageUrl, text }: Props
       {winner ? <Badge tone="good">Winner</Badge> : null}
     </div>
     {imageUrl ? (
-      <img src={imageUrl} alt={`Option ranked ${rank}`} className="mt-3 max-h-64 w-full rounded-2xl border-2 border-line object-cover" />
+      <img src={imageUrl} alt={`Option ranked ${rank}`} className="mt-3 max-h-64 w-full rounded-2xl border-2 border-line bg-sunken object-contain" />
     ) : (
       <p className="mt-3 whitespace-pre-wrap break-words font-semibold">{text}</p>
     )}

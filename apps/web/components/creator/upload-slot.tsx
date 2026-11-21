@@ -19,7 +19,7 @@ export const UploadSlot = ({ index, image, error, onPick, onRemove }: Props) => 
     <div className="space-y-2">
       <div className="grid aspect-[4/3] place-items-center overflow-hidden rounded-2xl border-2 border-dashed border-line bg-sunken">
         {image ? (
-          <img src={image.previewUrl} alt={`Option ${index + 1} preview`} className="size-full object-cover" />
+          <img src={image.previewUrl} alt={`Option ${index + 1} preview`} className="size-full bg-sunken object-contain" />
         ) : (
           <label htmlFor={id} className="flex size-full cursor-pointer items-center justify-center p-3 text-center text-sm font-bold text-muted">
             Option {index + 1}: choose image
