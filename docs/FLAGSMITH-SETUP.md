@@ -126,10 +126,12 @@ Wave release: module flags default **off** in Production. Add segment overrides:
 
 Experiment `voting_layout_v1`
 - Hypothesis: "The swipe layout raises the share of testers who finish a 5-set session from the grid baseline within 24 h."
-- Rollout 100%, split evenly across the four views (control gets the remainder). Weights cannot be changed while it runs, only the rollout %, so finish playing with percentages first.
-- Numbers are not the goal (see `SCOPE.md` section 5): the sample-size table below explains why Flagsmith will likely show *Collecting data*, not a reason to cut views.
-- Primary metric: `session_completed`, **Occurrence**, higher is better.
-- Votes per tester and time per vote come from our own `votes` table, not from Flagsmith.
+- Rollout 100%, two arms per decision D2 in `DUE-DILIGENCE.md`: `grid` vs `swipe` 50/50, `this_or_that` and `yes_no` at 0% (control gets the remainder). The four-arm plan is superseded. Weights cannot be changed while it runs, only the rollout %, so finish playing with percentages first.
+- The sample-size table below still applies: two arms need 50 identities each to leave *Collecting data*. Target 130+ recruited (D10). If the interval still spans zero, say so on camera.
+- Primary metric: `session_completed`, **Occurrence**, higher is better. Locked before any data is collected (D10).
+- Guardrail (not expected to move): average time per vote per view, from our own database. Flagsmith takes one primary metric.
+- Votes per tester and time per vote come from our own `responses` and `set_results` tables, not from Flagsmith.
+- `voting_layout` is created multivariate from the start, never converted from boolean (D11c).
 - Create the experiment only after every layout in it works (flag locks; variations cannot be added later).
 - Decision rule: use Flagsmith's own thresholds. Ship `swipe` above **95%** chance to beat control; keep `grid` below 5%; otherwise keep `grid` and report inconclusive with the credible interval.
 
@@ -160,4 +162,86 @@ With 50-100 visitors over 4 views, expect *Collecting data* in Flagsmith; the pe
 
 No exposures: variation without `key`; flag requested before `identify`; page closed before `flushEvents`; SDK still pointing at Cloud events URL.
 No conversions: event name differs by case/spelling; different identity id than the exposure; conversion happened before the first exposure.
+Exposures on one arm only: the flag is read in one place and rendered from another; read it once in `apps/web/lib/session.ts` and render that value. Flat conversions with rising exposures: `trackEvent` not firing, or called with a different identity than the exposure (call it when the last set is saved, never on page load). Reassigned visitors: identity regenerated per request instead of the persisted guest id. No fallback when Flagsmith is down: add the default flag handler on both SDKs (D11f).
 Nothing in results: no warehouse connected on that environment; identity outside rollout; timestamps outside window; batch over 2 MiB; enable SDK debug logging.
+
+## 7. Verified against self-hosted Flagsmith (local, 2026-11-21)
+
+Instance: official compose, project `picklab-flagsmith`, mapped to port 8100 (8000 was taken), `EXPERIMENTATION_ENABLED=true`. JS SDK 12.5.0, Node SDK 9.4.0.
+
+Worked
+- `pnpm flagsmith:setup` (`scripts/flagsmith-setup.ts`, admin REST API) on Development: 4 segments, 6 flags, 3 keyed variations, 6 segment overrides (19 changes). Second run: "no changes".
+- Client API `POST /api/v1/identities/` with traits: wave 1 tester gets thumbnails+captions only; wave 2 tester gets no module; creator gets all four (D3). `voting_layout` reports `variant: "swipe"` for a swipe bucket and `variant: "control"` for control (the app maps unknown/`control` to `grid`).
+
+REST paths used: `GET /environments/?project=<id>`, `GET|POST /projects/<id>/segments/`, `GET|POST /projects/<id>/features/` (`type: MULTIVARIATE`, `initial_value`), `POST /projects/<id>/features/<f>/mv-options/` (`key` is settable here, read-only in the nested create), `GET /environments/<key>/featurestates/?feature=<f>`, `PATCH /features/featurestates/<id>/` (weights), `GET /features/feature-segments/?environment=<id>&feature=<f>`, `POST /environments/<key>/features/<f>/create-segment-override/`. Schema: `/api/v1/swagger.json`.
+
+The experiment API exists in this build: `/environments/<key>/experiment-metrics/` (aggregation `occurrence`, direction `up`), `/environments/<key>/experiments/` (+ `start`, `exposures`, `results`, `complete`), `/environments/<key>/warehouse-connections/` (type `flagsmith`). Nothing is created yet; no warehouse connection exists on either environment.
+
+SDK note (JS 12.5.0 source): `getExperimentFlag` records an exposure only when the flag carries `experiment.inExperiment` (a running experiment) and flags came from the server, so there are no exposures before the experiment starts.
+
+Not verified yet: API server path with `FLAGSMITH_SERVER_KEY` (cache, kill switch, 503/403, outage fallback), browser path in Next, weights to swipe=100 and identity override, `trackEvent` reaching `/api/v1/events/`, metric/experiment creation and exposures, the Production environment.
+
+### 7.1 API server path, verified (local, 2026-11-21)
+
+API run with `FLAGSMITH_SERVER_KEY` (Development) against the local Flagsmith, on a fresh database, using curl:
+
+| Check | Result |
+| --- | --- |
+| Wave 1 guest `GET /api/modules` | `thumbnails`, `captions` only |
+| Wave 2 and wave 3 guests | no modules (no segment override yet) |
+| Creator (dev login) | all four modules (D3) |
+| `voting_enabled` off in Flagsmith | within 12 s `votingEnabled=false`, `POST /api/sessions` returns 503 |
+| `voting_enabled` back on | restored within 12 s |
+| Flagsmith unreachable, no cache (API pointed at a dead URL) | `{"votingEnabled":true,"modules":[]}`, session start refused with 403 (TRD 6) |
+
+Still not verified: module-off mid-session 403 on set results through a real flag change, a `wave_2` override appearing live, and the whole browser SDK path (identity override, weight change, `trackEvent` reaching the events endpoint, experiment and exposures). The experiment endpoints exist (`/environments/<key>/experiment-metrics/`, `/experiments/`, `/warehouse-connections/`) but no warehouse connection, metric or experiment was created.
+
+Toggle helper used for the kill switch test: PATCH `/environments/<client key>/featurestates/<id>/` with `{"enabled": false}` using the admin token.
+
+### 7.2 Changing `voting_layout` weights through the API (verified, local, 2026-11-21)
+
+- `PATCH` on `/environments/<key>/featurestates/<id>/` with nested `multivariate_feature_state_values` returns 200 but **does nothing**. Use `PUT` with the full feature state object (`scripts/flagsmith-setup.ts` does).
+- With weights swipe 100: 20 of 20 new identities received `swipe`. Restored to swipe 10 / others 0. This is the Stream B demo (change the split in Flagsmith, new visitors get the new view, no deploy) at API level. Existing assignment for an identity changes when weights change, as the docs warn.
+- In the dashboard the same change is a normal edit; this note only matters for scripts.
+
+### 7.4 Browser SDK layout mapping, verified (Node, same init options as `apps/web/lib/flags.tsx`, 2026-11-21)
+
+`@flagsmith/flagsmith` 12.5.0 (`/isomorphic` `createFlagsmithInstance`): `init` with `enableEvents`, `eventProcessorConfig.eventsApiUrl`, then `identify(id, { role, wave })` and `getExperimentFlag('voting_layout')`. Weights swipe 100: 15 of 15 identities returned `{enabled: true, variant: 'swipe'}`. All weights 0: 10 of 10 returned `variant: 'control'`, which the app maps to `grid`. Weights restored to swipe 10. Not covered here (Chrome extension was disconnected): the rendered UI in a real browser, identity overrides, and events landing in an experiment (see 7.3).
+### 7.3 Experiment pipeline, verified (local, 2026-11-21)
+
+`pnpm flagsmith:experiment --probe` (`scripts/flagsmith-experiment.ts`) ran the whole pipeline on a throwaway flag `exp_probe` in Development (control `a`, variations `b`, `c`) and cleaned up afterwards. `voting_layout` was not touched; `pnpm flagsmith:setup` still says "no changes". A JSON compare of the flags, segments and feature states in Development before and after run 1 showed them identical, and the identity count was back to 173. What stays: the warehouse connection, the metric `session_completed`, the SDK events in Flagsmith's `events` table (no delete API), and soft-deleted probe experiments.
+
+Endpoints and payloads (admin token, `/api/v1`, `<key>` = environment client key)
+- Warehouse: `POST /environments/<key>/warehouse-connections/` `{"warehouse_type":"postgres","config":{"source":"flagsmith_database"}}` -> 201, status `connected`. One connection per environment (a second one returns 409).
+- **Type `flagsmith` does not work self-hosted.** Created it, then `POST /api/v1/events/` returned 404 `"This environment does not store events in Flagsmith."`. That type reads from ClickHouse (`EXPERIMENTATION_CLICKHOUSE_URL`, not set in our compose). The events endpoint only accepts events when the connection is postgres + `source: flagsmith_database`, which works only on self-hosted with Postgres. Deleted the `flagsmith` one and created the postgres one.
+- Metric: `POST /environments/<key>/experiment-metrics/` `{"name":"session_completed","aggregation":"occurrence","direction":"up","definition":{"version":1,"event":"session_completed"}}`. `definition.version` is required.
+- Experiment: `POST /environments/<key>/experiments/` `{"feature":<id>,"name":"exp_probe_v1","hypothesis":"...","metrics":[{"metric":<metric id>,"expected_direction":"increase"}],"experiment_rollout":{"enabled":true,"rollout_percentage":100,"feature_state_value":{"type":"string","value":"a"},"multivariate_feature_state_values":[{"multivariate_feature_option":<b>,"percentage_allocation":50},{"multivariate_feature_option":<c>,"percentage_allocation":0}]}}` -> 201, status `created`. There is no "primary" field; we attach one metric. Then `POST .../experiments/<id>/start/` -> `running`, and `POST .../complete/` -> `completed`.
+- Read: `POST .../exposures/refresh/` and `POST .../results/refresh/` (202, at most once per 5 min, the task processor computes it in about 2 s), then `GET .../exposures/` and `GET .../results/`. Both return `null` until a refresh has run. A refresh after `complete` is allowed once and gives `is_final: true`.
+
+Results (two clean runs, 120 identities each, 60% tracked `session_completed`)
+
+| Run | Exposures control / b / c | Conversions control / b | Inference for b | SRM |
+| --- | --- | --- | --- | --- |
+| 1 | 59 / 61 / 0 | 36 / 36 | lift -3.3%, CI -31.8%..+25.2%, chance to win 41% | `srm_p_value: null` |
+| 2 | 64 / 56 / 0 | 38 / 34 | lift +2.3%, CI -27.9%..+32.4%, chance to win 56% | `srm_p_value: null` |
+
+SDK counts matched the server's exposure counts exactly. Both arms had at least 50 identities and 5 conversions, so `inference` was filled in, and the result was inconclusive (the CI crosses 0), as expected with identical rates. The 50-per-arm rule is in the code: below `RESULTS_MIN_IDENTITIES_PER_VARIANT = 50` (or `RESULTS_MIN_CONVERSIONS_PER_VARIANT = 5` for occurrence metrics) `inference.<variant>` is `null`, and the dashboard shows that as *Collecting data*. `excluded_identities: 0`.
+
+Quirks
+- **Gate G3: weight 0 inside an experiment split is accepted.** `c` at 0 was stored, got 0 identities, and appears neither in exposures nor in results. grid 50 / swipe 50 / this_or_that 0 / yes_no 0 (D2) is a valid payload.
+- **Creating an experiment changes the flag right away, before `start`.** Create zeroes the flag's environment-default weights (b 10 -> 0, verified) and adds a system rollout segment override that serves the split at once. Before start, 10 new identities got 5 control / 5 b (run 2: 4 / 6), but none had `experiment.inExperiment`, so no exposures were sent. Exposures count only from `start` on. For `voting_layout` this means: creating `voting_layout_v1` already shows swipe to 50% of users, so do not create it before 28 Nov (D1). `--real` creates it but does not start it, and refuses to run without `--yes`.
+- `GET .../experiments/` returns `feature` as an object (`{id, name, ...}`), not an id. Because of this, the lock check in `flagsmith-setup.ts` never matched. It is fixed now and treats any experiment that is not completed as locking the flag. The fix typechecks, but no experiment existed on `voting_layout` to exercise it.
+- `srm_p_value` stayed `null` with 120 identities, even though the docs say the SRM check runs from 100 identities. The server reads the expected split from the environment default, and the create had zeroed it (a TODO in the Flagsmith source). Do not count on the SRM warning.
+- Deleting the flag also removes its experiment (404 afterwards) and its rollout segment does not show in the segment list.
+- SDK in Node: load `@flagsmith/flagsmith/isomorphic`. The default entry uses `XMLHttpRequest`, and under tsx the default import of the CJS bundle has no `.init`. Methods used: `init({ environmentID, api, enableEvents: true, eventProcessorConfig: { eventsApiUrl } })`, `identify(id)`, `getExperimentFlag(name)` (returns `variant: "control"` for control and `experiment.inExperiment` once running), `trackEvent(name)`, `flushEvents()`, `close(ms)`. One instance with `identify()` per identity worked for 130 identities.
+
+Reproduce: `set -a; . flagsmith/flagsmith.env; set +a; pnpm flagsmith:experiment --probe` (about 1 min, leaves no flag behind). Real experiment, on or after 28 Nov only: `pnpm flagsmith:experiment --real --yes`, then start it in the dashboard or with `POST .../experiments/<id>/start/`.
+
+### 7.5 Real browser against real Flagsmith (Chrome, 2026-11-21)
+
+Web (dev server) with `NEXT_PUBLIC_FLAGSMITH_*` set and the API on a Development server key, no `?layout=`:
+
+- A wave-2 visitor saw "Your group opens soon". After a `wave_2` segment override on `module_captions` was created in Flagsmith, **Captions appeared on the already-open page after 13 s with a NEW badge, no reload** (X-04).
+- With `voting_layout` weights swipe 100, the next session rendered the swipe view from the live flag.
+- **Identity override works, but you must give the override a variation weight.** `POST /environments/<key>/identities/<identity id>/featurestates/` with `multivariate_feature_state_values: [{ multivariate_feature_option: <this_or_that option id>, percentage_allocation: 100 }]` made the client API return `this_or_that` for that identity (before: `swipe`), and the next session in the browser was this-or-that (X-03). A plain value override would not set the variation.
+- Test overrides were deleted afterwards; `pnpm flagsmith:setup` reports no changes.

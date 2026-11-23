@@ -1,0 +1,68 @@
+# PickLab: Build status (unattended build, 21 Nov 2026)
+
+Branch `t/T0` holds everything merged. `main` is untouched. Nothing is pushed.
+
+## What exists and works (verified locally)
+
+| Part | State | Evidence |
+| --- | --- | --- |
+| `packages/shared` | Contract: constants, zod schemas, rules | U-01..U-12 pass (13 tests) |
+| `apps/api` | All TRD 5 endpoints, local-mode stand-ins | A-01..A-54 pass (66 tests); live smoke test through the web `/api` proxy: guest, consent, creator set, session, set result, results, admin live/overview |
+| `apps/web` visitor | Landing, consent, home, 4 voting views, done, paused | typecheck, lint, build; all pages 200 |
+| `apps/web` creator/admin | Login, my sets, new set, results, Stats, Live, account | typecheck, lint, build; all pages 200 |
+| `scripts` | `seed` (idempotent, PNG renderer), `simulate`, `flagsmith-setup.sh` (draft) | seed twice = 0 new sets; simulate 40 visitors, no 5xx |
+| `flagsmith/` | Official docker-compose with dev header | Not started (no Docker run) |
+
+Run it: see README section 7 ("Quickest start"). Dates and exact commands for 27-29 Nov: `docs/RUNBOOK.md`.
+
+## Verified in a real browser (21 Nov, DOM-driven, no screenshots)
+
+Consent, home with live module counts, and full 5-set sessions in **all four views** (swipe buttons, grid radios + Confirm, this-or-that knockout with 2/3/4 options, yes/no), seeded PNGs load at 1280x720, done page. Dev login through the form, creator publish (captions), results page, admin Stats and Live with correct per-view numbers, and no horizontal overflow at 360 px on all 11 pages. One bug found and fixed: Next ignored the root .env (dev-login form was missing); `next.config.ts` now loads it.
+
+## Design audit (measured in Chrome and by calculation, no screenshots)
+
+Dark mode, measured on live pages (home, voting views, creator, creator/new, admin, live, account, start): **no text below WCAG AA contrast, tap targets 44 px or at least 24 px**. Fixed along the way: (1) home progress card was 1.1:1 in dark mode (`Card` could not be re-coloured; `cn()` does not resolve Tailwind conflicts); (2) view badges used white text on view colours that fail AA (amber 1.7:1 in dark); each view now has its own text colour (`--view-*-ink`); (3) light-mode tokens below 4.5:1 darkened (accent #d64118, good #197e44, bad #c5291d, grid #335ee0); (4) footer and admin header links raised to at least 24 px. Light mode was checked by calculating the token pairs, not on screen (this browser cannot switch scheme). **Looked at on screen** (headless Chrome at 390 px via the DevTools Protocol, dark mode; script pattern: launch Chrome with `--remote-debugging-port`, set the `pl_guest` cookie, `Emulation.setDeviceMetricsOverride`, `Page.captureScreenshot`): landing, consent, login, about, home, all four voting views, creator/new, admin Stats and Live. Found and fixed: long caption text overflowing its tile in the grid view (text frames now grow, grid is one column for text on phones), and `My sets` staying highlighted on `/creator/new`. Overall the look is coherent and readable. **Also seen and exercised via the DevTools Protocol (second pass):** light mode (home, grid voting, creator results), desktop 1280 px (swipe voting, Live, results), a **real mouse drag on the swipe card** (Card 1 of 3 became Card 2 of 3 after a right drag), and a **real image upload through the file inputs followed by Publish** (landed on the new set's results page). Fixed on the way: upload and result previews cropped the image (now `object-contain`). **Third pass (DevTools Protocol, touch emulation):** real touch swipe works in both directions; a GIF and a 6 MB file are rejected with clear messages (E-30); a camera-style 4000x3000 JPEG (531 KB) was resized in the browser to 1600x1200 and stored as a 1600x1200 WebP of 67 KB, published, and shown on the results page. **Fixed after testing:** the client used to reject any original file over 5 MB, which would have refused typical 6-12 MB phone photos. The original may now be up to 25 MB (`LIMITS.uploadSourceMaxBytes`); the 5 MB limit still applies to the resized file on the server. Verified with a 12 MB noisy 4000x3000 JPEG (resized to 1600x1200, published) and a 30 MB file (rejected). **Still not looked at:** a real phone, Safari and other browsers, very long titles, and real creator photos from varied cameras. **EXIF rotation is handled:** a 4000x3000 JPEG with orientation 6 came out as a 1200x1600 portrait preview in Chrome.
+
+## Local database tip
+
+The API now closes PGlite on Ctrl+C / SIGTERM, and prints a clear message if the local database was left damaged (for example after a force-kill mid-write). Fix: delete `apps/api/.data`, start the API, run `pnpm seed` (about 5 minutes). Force-killing the API (Task Manager, `taskkill /F`) while it writes can still damage it; production uses Postgres and is not affected.
+
+## NOT verified (do these first)
+
+1. **Pixel-level look.** Screenshots time out in this browser session, so nobody has looked at the design. Check visual polish, swipe drag by finger/mouse, and the image upload flow from the creator form (file picker + browser resize). The API side of uploads is tested by the seed run.
+2. **Real Flagsmith: mostly verified on a local self-hosted instance** (FLAGSMITH-SETUP 7.1-7.4): module access by wave and creator, kill switch 503, outage fallback, weight change reaching new visitors, SDK layout mapping, `pnpm flagsmith:setup` (REST, idempotent), and the **whole experiment pipeline** (warehouse, metric, experiment, SDK exposures and conversions, results with a verdict on a throwaway flag; weight 0 inside the split is accepted, so gate G3 passes). **Also verified in a real Chrome against real Flagsmith (FLAGSMITH-SETUP 7.5):** wave release appearing live in 13 s, live-flag layout, identity override. **Still untested:** the real `voting_layout_v1` experiment (deliberately not created). Gates G1 (does Track 01 allow self-hosted) and G2 (dry run on Railway) are still open.
+3. **Google sign-in: code path checked, not end to end.** With dummy credentials `/api/auth/google` returns a correct 302 to accounts.google.com (right `redirect_uri` on the web origin, scope, state, signed 10-minute cookie). The code exchange needs real credentials.
+4. **R2: presigning checked, not the upload.** With dummy credentials `/api/uploads/sign` returns a SigV4 PUT URL on `<bucket>.<account>.r2.cloudflarestorage.com`, 300 s, under `u/<userId>/`. A real PUT, the public URL and CORS need a real bucket.
+5. Flagsmith dashboard link paths on the Stats page are guesses (`/features?search=`, `/experiments`, `/users`).
+
+Local DB note: `apps/api/.data` (PGlite) was deleted during the Flagsmith checks, so the DB starts empty: run `pnpm seed` (about 5 minutes because of the upload rate limit).
+
+## Deviations from the docs (all intentional, all small)
+
+- **No Better Auth.** Guests use a signed cookie `pl_guest` (the TRD 4.3 fallback), Google is a manual OAuth code flow with `fetch`. Same guest id is kept on sign-in (A-07). Reason: fewer moving parts and no gate G5 spike. Added `POST /api/auth/logout`.
+- `@electric-sql/pglite` is a runtime dependency (local mode). `variant_sets.creator_id` is nullable, `on delete set null`, so `DELETE /me` can keep soft-deleted sets (A-54).
+- Web admin and creator pages compute percentages client-side from counts.
+- Seed data: reel captions and visuals have 10 sets each (target was 20+, S-01 warning). Thumbnails and captions have 24.
+- Seeding takes about 5 minutes because uploads are rate-limited to 20 files per minute.
+- TypeScript is pinned to 5.x, vitest to 3.x, eslint to 9.x.
+
+## Experiment runbook gotchas (found while testing, matter on 28 Nov)
+
+- **Creating the experiment changes the flag immediately**, before it starts: the default weights go to 0 and the 50/50 split is served at once, but exposures count only from start. So create `voting_layout_v1` only when you are ready to start (D1), then start it right away. `pnpm flagsmith:experiment --real --yes` creates it (not started).
+- **Self-hosted warehouse type must be `postgres` with source `flagsmith_database`**; type `flagsmith` cannot receive events here (events return 404).
+- **Change weights through the API with PUT, not PATCH** (PATCH is silently ignored). In the dashboard it is a normal edit.
+- The sample-ratio-mismatch warning did not appear at 120 identities; don't rely on it. The 50-identities-per-arm and 5-conversions rule is enforced server-side.
+- A probe run left test events in the local Flagsmith DB (no delete API). Use a fresh instance (`docker compose ... down -v`) for the real run if you want clean numbers.
+
+## Open decisions for you
+
+- Guardrail metric is "avg time per vote" (D10). Change it if you prefer another.
+- Product name and domain, who owns Flagsmith, the Discord answer on self-hosting (README section 10).
+- The experiment itself (metric, rollout) is created in the Flagsmith dashboard by a human.
+
+## Suggested next steps
+
+1. `pnpm install && pnpm dev && pnpm seed`, then click through every page at 360 px and desktop (TEST-CASES section 5).
+2. Start local Flagsmith (`flagsmith/README.md`), run `scripts/flagsmith-setup.sh`, resolve the `# verify:` lines, then test F-01..F-15.
+3. Copy `.env.example` values for real services, deploy (Vercel, Railway, Neon, R2) per TRD section 7.
+4. Merge `t/T0` into `main` through a PR.

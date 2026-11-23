@@ -1,0 +1,30 @@
+{
+  "name": "picklab",
+  "private": true,
+  "packageManager": "pnpm@11.13.1",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "pnpm --parallel -r dev",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "pnpm -r lint",
+    "test": "pnpm -r test",
+    "db:generate": "pnpm --filter @picklab/api db:generate",
+    "db:migrate": "pnpm --filter @picklab/api db:migrate",
+    "seed": "tsx --tsconfig scripts/tsconfig.json scripts/seed.ts",
+    "simulate": "tsx --tsconfig scripts/tsconfig.json scripts/simulate.ts",
+    "typecheck:scripts": "tsc -p scripts",
+    "flagsmith:setup": "tsx --tsconfig scripts/tsconfig.json scripts/flagsmith-setup.ts",
+    "flagsmith:experiment": "tsx --tsconfig scripts/tsconfig.json scripts/flagsmith-experiment.ts"
+  },
+  "type": "module",
+  "devDependencies": {
+    "eslint": "^9.0.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0",
+    "typescript-eslint": "^8.0.0",
+    "vitest": "^3.2.0"
+  }
+}
