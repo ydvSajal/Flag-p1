@@ -2,65 +2,55 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-import { buttonClass } from '@/components/ui/button';
+import { useEffect, useState } from 'react';
 import { useFlags } from '@/lib/flags';
 
-const STEPS = [
-  ['1', 'Post', 'Add 2 to 4 options.'],
-  ['2', 'Pick', 'Real people vote.'],
-  ['3', 'See', 'Watch the winner rise.'],
+const steps = [
+  ['Build your set', 'Pair up thumbnails, captions or visuals. Give people two to four options to choose from.'],
+  ['Let people pick', 'Guests vote in short sessions. They can join from any screen without an account.'],
+  ['Find your favorite', 'See how the votes split across your options before deciding what to publish.'],
 ] as const;
 
-/** P-01. One screen. Returning visitors skip straight on. */
-const Landing = () => {
+function ExampleSet() {
+  const [pick, setPick] = useState<string | null>(null);
+  return (
+    <section className="sample" aria-label="Interactive example set">
+      <div className="sample-head"><span className="sample-label">Example set</span><span>Cover artwork</span></div>
+      <h2>Which cover would you play?</h2>
+      <div className="cover-pair">
+        {(['Alpine Hours', 'After Hours'] as const).map((title, i) => (
+          <button type="button" className="cover" key={title} aria-pressed={pick === title} onClick={() => setPick(title)} aria-label={`Pick ${title}`}>
+            <img src={i ? '/studio/after.webp' : '/studio/alpine.webp'} width="550" height="690" alt={`${title}, ${i ? 'apricot' : 'blue'} mountain record sleeve`} />
+            <span className="cover-caption"><b>Option {i ? 'B' : 'A'}</b><span aria-hidden="true">{pick === title ? '✓' : ''}</span></span>
+          </button>
+        ))}
+      </div>
+      <p role="status" className="sample-foot">{pick ? `You picked ${pick}.` : 'Try it out. Pick a cover.'}</p>
+    </section>
+  );
+}
+
+export default function Landing() {
   const router = useRouter();
   const { me } = useFlags();
-
   useEffect(() => {
-    if (!me) return;
-    if (me.role === 'creator') router.replace('/creator');
-    else if (me.consented) router.replace('/app');
+    if (me?.role === 'creator') router.replace('/creator');
+    else if (me?.consented) router.replace('/app');
   }, [me, router]);
-
   return (
-    <div className="mx-auto flex max-w-[720px] flex-col gap-8 px-4 pt-10 sm:pt-16">
-      <div className="anim-pop space-y-5">
-        <p className="inline-block -rotate-1 rounded-full border-2 border-line bg-accent px-3 py-1 text-sm font-extrabold text-accent-ink">
-          A tiny experiment, live now
-        </p>
-        <h1 className="text-5xl font-black leading-[0.95] tracking-tighter sm:text-7xl">
-          Which one <span className="underline decoration-accent decoration-8 underline-offset-4">wins?</span>
-          <br />
-          Let real people pick.
-        </h1>
-        <p className="max-w-md text-lg text-muted">Thumbnails, captions, visuals. Vote in a minute, or post your own.</p>
+    <div className="studio-wrap">
+      <div className="studio-hero">
+        <section className="hero-copy">
+          <h1>Which one<br/>makes <em>the cut?</em></h1>
+          <p>Test your thumbnails, captions and visuals with real people before you hit publish.</p>
+          <div className="hero-actions"><Link className="studio-primary" href="/login">Create a set</Link><Link className="studio-secondary" href="/start">Start voting</Link></div>
+        </section>
+        <ExampleSet />
       </div>
-      <div className="flex flex-col gap-3 sm:flex-row">
-        <Link href="/start" className={buttonClass('primary', 'min-h-14 text-lg')}>
-          Start voting
-        </Link>
-        <Link href="/login" className={buttonClass('secondary', 'min-h-14 text-lg')}>
-          Post options
-        </Link>
-      </div>
-      <ol className="grid grid-cols-3 gap-3">
-        {STEPS.map(([n, title, text]) => (
-          <li key={n} className="rounded-chunk border-2 border-line bg-surface p-3 sm:p-4">
-            <span className="text-2xl font-black text-accent">{n}</span>
-            <p className="font-extrabold">{title}</p>
-            <p className="text-sm text-muted">{text}</p>
-          </li>
-        ))}
-      </ol>
-      <p className="text-sm text-muted">
-        Part of a live Flagsmith A/B test.{' '}
-        <Link href="/about-test" className="underline underline-offset-2">
-          What does that mean?
-        </Link>
-      </p>
+      <section className="how" id="how-it-works">
+        <h2>From draft to decision</h2>
+        <ol>{steps.map(([title, description], i) => <li key={title}><div className="step-title"><span>{String(i + 1).padStart(2, '0')}</span><h3>{title}</h3></div><p>{description}</p></li>)}</ol>
+      </section>
     </div>
   );
-};
-
-export default Landing;
+}

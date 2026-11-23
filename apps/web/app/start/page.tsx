@@ -35,7 +35,7 @@ const Start = () => {
   };
 
   return (
-    <div className="mx-auto max-w-[720px] space-y-6 px-4 pt-10">
+    <div className="workspace compact space-y-6">
       <h1 className="text-4xl font-black tracking-tighter sm:text-5xl">Before you vote</h1>
       <Card className="space-y-3 text-lg">
         <p>PickLab is running a real experiment. You will see one of several voting layouts.</p>

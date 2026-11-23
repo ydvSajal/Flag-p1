@@ -60,7 +60,7 @@ const Results = ({ id }: { id: string }) => {
   const top = ranked[0]?.pct ?? 0;
 
   return (
-    <div className="mx-auto max-w-[720px] space-y-4 px-4 pt-8">
+    <div className="workspace space-y-4">
       <Link href="/creator" className="text-sm font-bold underline underline-offset-2">
         My sets
       </Link>
@@ -74,7 +74,7 @@ const Results = ({ id }: { id: string }) => {
       ) : (
         <>
           {data.voters < 10 ? <Notice>Under 10 voters so far. Treat this as a hint, not a result.</Notice> : null}
-          <ul className="space-y-3">
+          <ul className="workspace-grid">
             {ranked.map((o, i) => (
               <ResultBar
                 key={o.variantId}

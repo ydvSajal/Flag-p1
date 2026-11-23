@@ -33,7 +33,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="mx-auto max-w-[720px] space-y-5 px-4 pt-8">
+    <div className="workspace compact space-y-5">
       <h1 className="text-3xl font-black tracking-tight">Post your options</h1>
       <p className="text-muted">Sign in to add a set and see which option wins. Voting needs no account.</p>
       <Card className="space-y-4">

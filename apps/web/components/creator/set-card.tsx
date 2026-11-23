@@ -14,9 +14,9 @@ export const SetCard = ({ set }: { set: MySet }) => (
       <div className="flex gap-2" aria-hidden>
         {set.preview.map((v) =>
           v.imageUrl ? (
-            <img key={v.id} src={v.imageUrl} alt="" className="size-14 rounded-xl border-2 border-line object-cover" />
+            <img key={v.id} src={v.imageUrl} alt="" className="aspect-square w-0 min-w-0 flex-1 rounded-lg border border-soft object-cover" />
           ) : (
-            <span key={v.id} className="line-clamp-2 min-h-14 max-w-32 flex-1 rounded-xl border-2 border-line bg-sunken p-2 text-xs">
+            <span key={v.id} className="line-clamp-2 min-h-14 max-w-32 flex-1 rounded-lg border border-soft bg-sunken p-2 text-xs">
               {v.text}
             </span>
           ),

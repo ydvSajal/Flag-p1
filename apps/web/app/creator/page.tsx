@@ -14,7 +14,7 @@ const MySets = () => {
   const { data, error, loading, reload } = usePoll(api.getMySets, null);
 
   return (
-    <div className="mx-auto max-w-[720px] space-y-4 px-4 pt-8">
+    <div className="workspace space-y-6">
       <div className="flex items-center justify-between gap-3">
         <h1 className="text-3xl font-black tracking-tight">My sets</h1>
         <Link href="/creator/new" className={buttonClass()}>
@@ -45,7 +45,7 @@ const MySets = () => {
           Add 2 to 4 options and see which one wins.
         </EmptyState>
       ) : (
-        data?.sets.map((s) => <SetCard key={s.id} set={s} />)
+        <div className="workspace-grid">{data?.sets.map((s) => <SetCard key={s.id} set={s} />)}</div>
       )}
     </div>
   );

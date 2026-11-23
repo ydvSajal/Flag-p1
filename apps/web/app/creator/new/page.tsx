@@ -30,7 +30,7 @@ const Body = () => {
 
 const NewSetPage = () => (
   <Gate need="creator">
-    <div className="mx-auto max-w-[720px] space-y-4 px-4 pt-8">
+    <div className="workspace space-y-4">
       <h1 className="text-3xl font-black tracking-tight">New set</h1>
       <Body />
     </div>

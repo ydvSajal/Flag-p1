@@ -56,7 +56,7 @@ const Home = () => {
   };
 
   return (
-    <div className="mx-auto max-w-[720px] space-y-5 px-4 pt-8">
+    <div className="workspace space-y-6">
       <h1 className="text-4xl font-black tracking-tighter sm:text-5xl">Ready to pick?</h1>
       {message ? <Notice>{message}</Notice> : null}
       {failed && !data ? (
@@ -76,7 +76,7 @@ const Home = () => {
       ) : (
         <>
           <ProgressCard modules={data.modules} />
-          <ul className="space-y-4">
+          <ul className="workspace-grid">
             {data.modules.map((m) => (
               <li key={m.key}>
                 <ModuleCard info={m} isNew={fresh.has(m.key)} busy={starting === m.key} onStart={() => void start(m.key)} />

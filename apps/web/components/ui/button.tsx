@@ -8,8 +8,8 @@ const base =
   'transition active:translate-y-px disabled:cursor-not-allowed disabled:opacity-45';
 
 const variants: Record<ButtonVariant, string> = {
-  primary: 'bg-accent text-accent-ink border-2 border-line shadow-chunk hover:-translate-y-0.5 active:shadow-none',
-  secondary: 'bg-surface text-ink border-2 border-line hover:bg-sunken',
+  primary: 'bg-accent text-accent-ink border border-transparent hover:brightness-110',
+  secondary: 'bg-surface text-ink border border-line hover:bg-sunken',
   ghost: 'text-ink hover:bg-sunken',
 };
 

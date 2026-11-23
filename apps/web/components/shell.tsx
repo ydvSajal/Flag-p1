@@ -2,71 +2,36 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { cn } from '@/lib/cn';
 import { useFlags } from '@/lib/flags';
 
-const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => {
+function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
   const path = usePathname();
-  // "My sets" (/creator) must not stay active on its sibling /creator/new.
-  const active = path === href || (href !== '/' && path.startsWith(`${href}/`) && !(href === '/creator' && path.startsWith('/creator/new')));
-  return (
-    <Link
-      href={href}
-      aria-current={active ? 'page' : undefined}
-      className={cn(
-        'inline-flex min-h-11 items-center rounded-full px-3 text-sm font-bold hover:bg-sunken',
-        active && 'bg-sunken',
-      )}
-    >
-      {children}
-    </Link>
-  );
-};
+  const active = path === href || (href === '/creator' && path.startsWith('/creator/sets/'));
+  return <Link href={href} aria-current={active ? 'page' : undefined}>{children}</Link>;
+}
 
-/** Role-aware top bar. Hidden on the voting screen, which has its own frame. */
-export const TopBar = () => {
+export function TopBar() {
   const path = usePathname();
   const { me } = useFlags();
   if (/^\/app\/session\/[^/]+$/.test(path)) return null;
   const creator = me?.role === 'creator';
-
   return (
-    <header className="sticky top-0 z-40 border-b-2 border-line bg-bg/90 backdrop-blur">
-      <div className="mx-auto flex max-w-[720px] items-center justify-between gap-2 px-4 py-2">
-        <Link href="/" className="flex min-h-11 items-center gap-2 text-xl font-black tracking-tight">
-          <span className="grid size-8 place-items-center rounded-lg border-2 border-line bg-accent text-accent-ink" aria-hidden>
-            P
-          </span>
-          PickLab
-        </Link>
-        <nav aria-label="Main" className="flex flex-wrap items-center justify-end gap-1">
-          <NavLink href="/app">Vote</NavLink>
-          {creator ? (
-            <>
-              <NavLink href="/creator">My sets</NavLink>
-              <NavLink href="/creator/new">New set</NavLink>
-            </>
-          ) : (
-            <NavLink href="/login">Post options</NavLink>
-          )}
-          {me?.isAdmin ? <NavLink href="/admin">Admin</NavLink> : null}
-          {me && !me.isAnonymous ? <NavLink href="/account">Account</NavLink> : null}
-        </nav>
-      </div>
-    </header>
+    <header className="studio-header"><div className="header-inner">
+      <Link href="/" className="wordmark"><span className="brand-mark" aria-hidden="true" />PickLab</Link>
+      <nav aria-label="Main" className="studio-nav">
+        {path === '/' && <Link href="#how-it-works" className="how-link">How it works</Link>}
+        <NavLink href={me?.consented ? '/app' : '/start'}>Vote</NavLink>
+        {creator && <NavLink href="/creator">My sets</NavLink>}
+        {me?.isAdmin && <NavLink href="/admin">Admin</NavLink>}
+        {me && !me.isAnonymous && <NavLink href="/account">Account</NavLink>}
+        <Link className="nav-action" href={creator ? '/creator/new' : '/login'}>{creator ? 'New set' : 'Creator studio'}</Link>
+      </nav>
+    </div></header>
   );
-};
+}
 
-export const Footer = () => (
-  <footer className="mx-auto mt-16 flex max-w-[720px] flex-wrap items-center justify-between gap-3 px-4 pb-10 text-sm text-muted">
-    <span>PickLab. A live Flagsmith A/B test.</span>
-    <span className="flex gap-4">
-      <Link href="/about-test" className="inline-flex min-h-6 items-center underline underline-offset-2">
-        About this test
-      </Link>
-      <Link href="/privacy" className="inline-flex min-h-6 items-center underline underline-offset-2">
-        Privacy
-      </Link>
-    </span>
-  </footer>
-);
+export function Footer() {
+  const path = usePathname();
+  if (/^\/app\/session\/[^/]+$/.test(path)) return null;
+  return <footer className="studio-footer"><span>PickLab <span aria-hidden="true">/</span> Powered by Flagsmith</span><div><Link href="/about-test">About the experiment</Link><Link href="/privacy">Privacy</Link></div></footer>;
+}

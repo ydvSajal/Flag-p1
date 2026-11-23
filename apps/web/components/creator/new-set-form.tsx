@@ -58,51 +58,58 @@ export const NewSetForm = ({ modules }: { modules: ModuleKey[] }) => {
 
   return (
     <form
-      className="space-y-5"
+      className="set-editor"
       onSubmit={(e) => {
         e.preventDefault();
         if (canPublish) void publish();
       }}
     >
-      <fieldset className="space-y-2">
-        <legend className="text-sm font-bold">What are you posting?</legend>
-        <div className="flex flex-wrap gap-2">
-          {modules.map((m) => (
-            <label key={m} className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border-2 border-line px-4 font-bold has-[:checked]:bg-accent has-[:checked]:text-accent-ink has-[:focus-visible]:outline">
-              <input
-                type="radio"
-                name="module"
-                className="sr-only"
-                checked={module === m}
-                onChange={() => {
-                  setModule(m);
-                  if (MODULE_KIND[m] !== MODULE_KIND[module]) setSlots(blanks());
-                }}
-              />
-              {MODULE_LABEL[m]}
-            </label>
-          ))}
-        </div>
-      </fieldset>
-      <Field label="Title" value={title} maxLength={LIMITS.setTitleMax} onChange={(e) => setTitle(e.target.value)} hint={`${title.length} / ${LIMITS.setTitleMax}`} />
-      <div className="grid gap-4 sm:grid-cols-2">
-        {slots.map((s, i) =>
-          isImage ? (
-            <UploadSlot key={s.key} index={i} image={s.image} error={s.error} onPick={(f) => void pick(s.key, f)} onRemove={() => remove(s.key)} />
-          ) : (
-            <TextSlot key={s.key} index={i} value={s.text} onChange={(text) => patch(s.key, { text })} onRemove={() => remove(s.key)} />
-          ),
-        )}
+      <div className="editor-details">
+        <fieldset className="space-y-2">
+          <legend className="text-sm font-bold">What are you posting?</legend>
+          <div className="flex flex-wrap gap-2">
+            {modules.map((m) => (
+              <label key={m} className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border-2 border-line px-4 font-bold has-[:checked]:bg-accent has-[:checked]:text-accent-ink has-[:focus-visible]:outline">
+                <input
+                  type="radio"
+                  name="module"
+                  className="sr-only"
+                  checked={module === m}
+                  onChange={() => {
+                    setModule(m);
+                    if (MODULE_KIND[m] !== MODULE_KIND[module]) setSlots(blanks());
+                  }}
+                />
+                {MODULE_LABEL[m]}
+              </label>
+            ))}
+          </div>
+        </fieldset>
+        <Field label="Title" value={title} maxLength={LIMITS.setTitleMax} onChange={(e) => setTitle(e.target.value)} hint={`${title.length} / ${LIMITS.setTitleMax}`} />
       </div>
-      {slots.length < LIMITS.optionsMax ? (
-        <Button variant="secondary" onClick={() => setSlots((a) => [...a, blank()])}>
-          Add option
+      <div className="editor-options">
+        <h2 className="text-xl font-semibold">Options</h2>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {slots.map((s, i) =>
+            isImage ? (
+              <UploadSlot key={s.key} index={i} image={s.image} error={s.error} onPick={(f) => void pick(s.key, f)} onRemove={() => remove(s.key)} />
+            ) : (
+              <TextSlot key={s.key} index={i} value={s.text} onChange={(text) => patch(s.key, { text })} onRemove={() => remove(s.key)} />
+            ),
+          )}
+        </div>
+        {slots.length < LIMITS.optionsMax ? (
+          <Button variant="secondary" onClick={() => setSlots((a) => [...a, blank()])}>
+            Add option
+          </Button>
+        ) : null}
+      </div>
+      <div className="editor-submit">
+        {error ? <Notice tone="error">{error}</Notice> : null}
+        <Button type="submit" loading={busy} disabled={!canPublish} className="w-full">
+          {filled.length < LIMITS.optionsMin ? `Add at least ${LIMITS.optionsMin} options` : 'Publish'}
         </Button>
-      ) : null}
-      {error ? <Notice tone="error">{error}</Notice> : null}
-      <Button type="submit" loading={busy} disabled={!canPublish} className="w-full">
-        {filled.length < LIMITS.optionsMin ? `Add at least ${LIMITS.optionsMin} options` : 'Publish'}
-      </Button>
+      </div>
     </form>
   );
 };
