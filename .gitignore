@@ -11,3 +11,6 @@ flagsmith/flagsmith.env
 .vercel
 .claude/
 .data
+
+.vercel
+.env*
